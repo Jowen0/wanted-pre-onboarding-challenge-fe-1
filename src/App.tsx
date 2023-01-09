@@ -11,7 +11,7 @@ function App() {
         <Route path='/login' element={<Auth />} />
         <Route path='/' element={<Layout />} >
           <Route path='/' element={<Navigate to={"/login"} />} />
-          <Route path='/todoList' element={<TodoContainer />} >
+          <Route path='/todo' element={<TodoContainer />} >
             <Route path=':id' element={<TodoContainer />} />
           </Route>
         </Route>

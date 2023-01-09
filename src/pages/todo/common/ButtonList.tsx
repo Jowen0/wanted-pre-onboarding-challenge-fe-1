@@ -1,5 +1,7 @@
 import { TODO_API } from "api/todo";
 import { FC } from "react";
+import { useNavigate } from "react-router-dom";
+import { PAGE_URL } from "type/common";
 
 // Type
 import { TodoStatus, TodoType, TODO_STATUS } from "type/todo";
@@ -11,10 +13,13 @@ interface ButtonListProps {
 };
 const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoStatus }) => {
 
+    const navigation = useNavigate();
     // 등록
-    const handleCreate = () => {
+    const handleCreate = async () => {
         try {
-            TODO_API.updateTodo(todoInfo);
+            const outPut:TodoType = await TODO_API.createTodo(todoInfo);
+            alert('등록 완료');
+            navigation(`${PAGE_URL.TODO}/${outPut.id}`);
         }
         catch (error) {
             alert('등록 오류');
@@ -23,9 +28,11 @@ const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoStatus })
     };
 
     // 수정
-    const handleUpdate = () => {
+    const handleUpdate = async () => {
         try {
-            TODO_API.updateTodo(todoInfo);
+            await TODO_API.updateTodo(todoInfo);
+            alert('수정 완료');
+            handleTodoStatus(TODO_STATUS.READ);
         }
         catch (error) {
             alert('수정 오류');
@@ -34,9 +41,11 @@ const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoStatus })
     };
 
     // 삭제
-    const handleDelete = () => {
+    const handleDelete = async () => {
         try {
-            TODO_API.updateTodo(todoInfo);
+            await TODO_API.deleteTodo(todoInfo.id);
+            alert('삭제 완료');
+            navigation(`${PAGE_URL.TODO}`);
         }
         catch (error) {
             alert('삭제 오류');

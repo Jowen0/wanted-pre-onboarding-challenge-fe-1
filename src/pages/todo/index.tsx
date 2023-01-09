@@ -1,4 +1,4 @@
-import { FC, useCallback, useLayoutEffect, useState } from "react";
+import { FC, useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 // Type
@@ -26,8 +26,9 @@ const TodoContainer: FC<WithAuthType> = () => {
     }, []);
 
     useLayoutEffect(() => {
+        console.log('여기');
         getTodos();
-    }, [getTodos]);
+    }, [getTodos, status]);
 
     // TodoId 세팅
     const { id } = useParams();
@@ -53,12 +54,14 @@ const TodoContainer: FC<WithAuthType> = () => {
         };
     }, [id, todos, handleTodoStatus]);
 
+    console.log(todoId, status);
+    
     return (
         <>
             <div>
                 <button onClick={() => handleTodoStatus(TODO_STATUS.CREATE)}>등록</button>
             </div>
-            <TodoList todos={todos} handleTodoId={handleTodoId} />
+            <TodoList todos={todos} />
             {status !== TODO_STATUS.LIST && <TodoDetail todoId={todoId} status={status} handleTodoStatus={handleTodoStatus} />}
         </>
     );

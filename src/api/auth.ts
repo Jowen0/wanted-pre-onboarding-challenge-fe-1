@@ -5,14 +5,12 @@ import { AuthInfo } from "type/auth";
 
 const signUp = (params: AuthInfo) => {
 
-    const jsonParams = JSON.stringify(params);
-    return useAxios.post(AUTH_URL.SING_UP, jsonParams);
+    return useAxios.post(AUTH_URL.SING_UP, params);
 };
 
 const login = (params: AuthInfo) => {
 
-    const jsonParams = JSON.stringify(params);
-    return useAxios.post(AUTH_URL.LOGIN, jsonParams);
+    return useAxios.post(AUTH_URL.LOGIN, params);
 };
 
 const logOut = () => {

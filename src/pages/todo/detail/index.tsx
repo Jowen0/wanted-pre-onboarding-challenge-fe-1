@@ -24,16 +24,16 @@ const TodoDetail: FC<TodoDetailProps> = ({ todoId = "", status, handleTodoStatus
     });
 
      // Todo 데이터 가져오기
-     const getTodos = useCallback(async (id: string) => {
+     const getTodo = useCallback(async (id: string) => {
         const outPut: TodoType = await TODO_API.getTodo(id);
         setTodoInfo(prev => outPut);
     }, [setTodoInfo]);
 
     useLayoutEffect(() => {
         if(todoId) {
-            getTodos(todoId);
+            getTodo(todoId);
         };
-    },[todoId, getTodos]);
+    },[todoId, getTodo]);
 
     // Todo 데이터 입력
     const handleTodoInfo = (key: string, value: string) => {

@@ -8,9 +8,8 @@ import TodoItem from "./TodoItem";
 
 interface TodoListProps {
     todos: TodoType[],
-    handleTodoId: (value: string) => void,
 };
-const TodoList: FC<TodoListProps> = ({ todos, handleTodoId }) => {
+const TodoList: FC<TodoListProps> = ({ todos }) => {
 
     return (
         <div>
@@ -25,8 +24,8 @@ const TodoList: FC<TodoListProps> = ({ todos, handleTodoId }) => {
                     <col width={"*"} />
                 </colgroup>
                 <tbody>
-                    {todos.length > 0 && todos.map(todo => (<TodoItem key={todo.id} todoId={todo.id} onClickFn={handleTodoId} />))}
-                    {todos.length === 0 && <tr onClick={() => handleTodoId("1")}><td>데이터가 없습니다.</td></tr>}
+                    {todos.length > 0 && todos.map(todo => (<TodoItem key={todo.id} todoId={todo.id} />))}
+                    {todos.length === 0 && <tr><td>데이터가 없습니다.</td></tr>}
                 </tbody>
             </table>
         </div>
