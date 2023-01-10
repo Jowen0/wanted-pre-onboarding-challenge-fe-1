@@ -63,7 +63,7 @@ const TodoContainer: FC<WithAuthType> = () => {
             <div>
                 {status === TODO_STATUS.LIST && <button onClick={() => handleTodoStatus(TODO_STATUS.CREATE)}>등록</button>}
             </div>
-            <TodoList todos={todos} />
+            <TodoList todos={todos} status={status} />
             {status !== TODO_STATUS.LIST && <TodoDetail todoId={todoId} status={status} handleTodoId={handleTodoId} handleTodoStatus={handleTodoStatus} />}
         </>
     );

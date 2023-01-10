@@ -2,18 +2,19 @@ import { FC, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Type
-import { TodoType } from "type/todo";
+import { TodoStatus, TodoType, TODO_STATUS } from "type/todo";
 import { PAGE_URL } from "type/common";
 
 interface TodoItemProps {
     todo: TodoType,
+    status: TodoStatus,
 };
-const TodoItem: FC<TodoItemProps> = ({ todo }) => {
+const TodoItem: FC<TodoItemProps> = ({ todo, status }) => {
 
     const navigation = useNavigate();
     const handleClick = useCallback(() => {
-        navigation(`${PAGE_URL.TODO}/${todo.id}`)
-    },[navigation, todo]);
+        if(status !== TODO_STATUS.CREATE) navigation(`${PAGE_URL.TODO}/${todo.id}`);
+    },[navigation, todo, status]);
 
     return (
         todo ?
