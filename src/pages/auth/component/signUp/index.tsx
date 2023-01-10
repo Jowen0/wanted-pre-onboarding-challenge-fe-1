@@ -13,9 +13,10 @@ import { AuthResult } from "type/auth";
 import Input from "pages/common/atom/Input";
 
 interface SignUpProps {
+    handleIsLogin: (value: boolean) => void,
     handleToken: (token: string) => void,
 };
-const SignUp: FC<SignUpProps> = ({ handleToken }) => {
+const SignUp: FC<SignUpProps> = ({ handleIsLogin, handleToken }) => {
 
     // 회원가입 정보
     const { authInfo, handleAuthInfo, isValidated } = useAuth();
@@ -40,9 +41,10 @@ const SignUp: FC<SignUpProps> = ({ handleToken }) => {
         <div>
             <form>
                 <Input name={"email"} value={email} placeholder={"이메일을 입력하세요"} autoComplete={"off"} handleData={handleAuthInfo} />
-                <Input type={"password"} name={"password"} value={password} placeholder={"패스워드를 입력하세요"} autoComplete={"off"} handleData={handleAuthInfo} />
+                <Input type={"password"} name={"password"} value={password} placeholder={"8자리 이상 패스워드를 입력하세요"} autoComplete={"off"} handleData={handleAuthInfo} />
             </form>
             <div>
+                <button onClick={() => handleIsLogin(true)}>이전</button>
                 <button disabled={!isValidated} onClick={handleSignUp}>회원가입</button>
             </div>
         </div>

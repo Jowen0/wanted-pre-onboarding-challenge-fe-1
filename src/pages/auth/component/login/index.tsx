@@ -13,10 +13,10 @@ import { AuthResult } from "type/auth";
 import Input from "pages/common/atom/Input";
 
 interface LoginProps {
-    setIsLogin: React.Dispatch<React.SetStateAction<boolean>>,
+    handleIsLogin: (value: boolean) => void,
     handleToken: (token: string) => void,
 };
-const Login: FC<LoginProps> = ({ setIsLogin, handleToken }) => {
+const Login: FC<LoginProps> = ({ handleIsLogin, handleToken }) => {
 
     // 로그인 정보
     const { authInfo, handleAuthInfo, isValidated } = useAuth();
@@ -32,14 +32,14 @@ const Login: FC<LoginProps> = ({ setIsLogin, handleToken }) => {
             handleToken(outPut.token);
         }
         catch (error) {
-            alert('로그인 에러!')   ;
+            alert('로그인 에러!');
             console.log(error);
         };
     };
 
     // 회원가입 컴포넌트로 변경
     const changeToSignUp = () => {
-        setIsLogin(prev => false);
+        handleIsLogin(false);
     };
 
     return (

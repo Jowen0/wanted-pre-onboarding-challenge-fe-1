@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Type
@@ -12,6 +12,9 @@ const Auth = () => {
 
     // 로그인 페이지 여부 확인
     const [isLogin, setIsLogin] = useState(true);
+    const handleIsLogin = useCallback((value: boolean) => {
+        setIsLogin(prev => value);
+    }, [setIsLogin]);
 
     // 토큰 존재할 시 리다이렉트
     const [token, setToken] = useState('');
@@ -25,7 +28,7 @@ const Auth = () => {
     }, [navigation, token]);
 
     return (
-        isLogin ? <Login setIsLogin={setIsLogin} handleToken={handleToken} /> : <SignUp handleToken={handleToken} />
+        isLogin ? <Login handleIsLogin={handleIsLogin} handleToken={handleToken} /> : <SignUp handleIsLogin={handleIsLogin} handleToken={handleToken} />
     );
 }
 
