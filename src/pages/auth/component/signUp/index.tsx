@@ -18,14 +18,11 @@ interface SignUpProps {
 const SignUp: FC<SignUpProps> = ({ handleToken }) => {
 
     // 회원가입 정보
-    const { authInfo, handleAuthInfo, validateAuthInfo } = useAuth();
+    const { authInfo, handleAuthInfo, isValidated } = useAuth();
     const { email, password } = authInfo;
 
     // 회원가입
     const handleSignUp = async () => {
-
-        // 회원가입 정보 유효성검사
-        if(validateAuthInfo(true)) return;
 
         try {
             const outPut: AuthResult = await AUTH_API.signUp(authInfo);
@@ -46,7 +43,7 @@ const SignUp: FC<SignUpProps> = ({ handleToken }) => {
                 <Input type={"password"} name={"password"} value={password} placeholder={"패스워드를 입력하세요"} autoComplete={"off"} handleData={handleAuthInfo} />
             </form>
             <div>
-                <button onClick={handleSignUp}>회원가입</button>
+                <button disabled={!isValidated} onClick={handleSignUp}>회원가입</button>
             </div>
         </div>
     );

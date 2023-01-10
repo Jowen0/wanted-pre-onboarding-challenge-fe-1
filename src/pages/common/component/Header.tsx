@@ -9,8 +9,10 @@ import { AUTH_API } from "api/auth";
 const Header: FC<WithAuthType> = ({ handleToken }) => {
 
     const handleLogOut = () => {
-        AUTH_API.logOut();
-        handleToken('');
+        if(handleToken) {
+            AUTH_API.logOut();
+            handleToken('');
+        };
     };
 
     return (

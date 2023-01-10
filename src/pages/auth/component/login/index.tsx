@@ -19,14 +19,11 @@ interface LoginProps {
 const Login: FC<LoginProps> = ({ setIsLogin, handleToken }) => {
 
     // 로그인 정보
-    const { authInfo, handleAuthInfo, validateAuthInfo } = useAuth();
+    const { authInfo, handleAuthInfo, isValidated } = useAuth();
     const { email, password } = authInfo;
 
     // 로그인
     const handleLogin = async () => {
-
-        // 로그인 정보 유효성검사
-        if(validateAuthInfo(false)) return;
 
         try {
             const outPut: AuthResult = await AUTH_API.login(authInfo);
@@ -49,10 +46,10 @@ const Login: FC<LoginProps> = ({ setIsLogin, handleToken }) => {
         <div>
             <form>
                 <Input name={"email"} value={email} placeholder={"이메일을 입력하세요"} autoComplete={"off"} handleData={handleAuthInfo} />
-                <Input type={"password"} name={"password"} value={password} placeholder={"패스워드를 입력하세요"} autoComplete={"off"} handleData={handleAuthInfo} />
+                <Input type={"password"} name={"password"} value={password} placeholder={"8자리 이상 패스워드를 입력하세요"} autoComplete={"off"} handleData={handleAuthInfo} />
             </form>
             <div>
-                <button onClick={handleLogin}>로그인</button>
+                <button disabled={!isValidated} onClick={handleLogin}>로그인</button>
                 <button onClick={changeToSignUp}>회원가입</button>
             </div>
         </div>

@@ -2,20 +2,27 @@ import { FC, useCallback, useLayoutEffect, useState } from "react";
 
 // Type
 import { TodoStatus, TodoType, TODO_STATUS } from "type/todo";
+import { WithAuthType } from "pages/auth/component/withAuth";
+
+// Hook
+import { useTryCatch } from "hook/useTryCatch";
+
+// API
+import { TODO_API } from "api/todo";
 
 // Component
 import Input from "pages/common/atom/Input";
-import { TODO_API } from "api/todo";
 import ButtonList from "../common/ButtonList";
 
-interface TodoDetailProps {
+interface TodoDetailProps extends WithAuthType {
     todoId?: string,
     status: TodoStatus,
+    handleTodoId: (id: string) => void,
     handleTodoStatus: (status: TodoStatus) => void,
 };
-const TodoDetail: FC<TodoDetailProps> = ({ todoId = "", status, handleTodoStatus }) => {
+const TodoDetail: FC<TodoDetailProps> = ({ todoId = "", status, handleTodoId, handleTodoStatus }) => {
 
-    const [todoInfo, setTodoInfo] = useState({
+    const [todoInfo, setTodoInfo] = useState<TodoType>({
         title: "",
         content: "",
         id: "",
@@ -23,11 +30,12 @@ const TodoDetail: FC<TodoDetailProps> = ({ todoId = "", status, handleTodoStatus
         updatedAt: ""
     });
 
-     // Todo 데이터 가져오기
+    // Todo 데이터 가져오기
+    const { apiFn } = useTryCatch();
      const getTodo = useCallback(async (id: string) => {
-        const outPut: TodoType = await TODO_API.getTodo(id);
-        setTodoInfo(prev => outPut);
-    }, [setTodoInfo]);
+         const outPut = await apiFn(() => TODO_API.getTodo(id), "상세 에러");
+         if (outPut) setTodoInfo(prev => outPut);
+    }, [setTodoInfo, apiFn]);
 
     useLayoutEffect(() => {
         if(todoId) {
@@ -44,7 +52,7 @@ const TodoDetail: FC<TodoDetailProps> = ({ todoId = "", status, handleTodoStatus
 
     return (
         <div>
-            <ButtonList status={status} todoInfo={todoInfo} handleTodoStatus={handleTodoStatus} /> 
+            <ButtonList status={status} todoInfo={todoInfo} handleTodoId={handleTodoId} handleTodoStatus={handleTodoStatus} /> 
             <Input name="title" value={title} disable={status === TODO_STATUS.READ} handleData={handleTodoInfo} />
             <Input name="content" value={content} disable={status === TODO_STATUS.READ} handleData={handleTodoInfo} />
         </div>

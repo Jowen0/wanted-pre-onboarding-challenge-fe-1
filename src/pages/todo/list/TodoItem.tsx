@@ -1,36 +1,24 @@
-import { TODO_API } from "api/todo";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { PAGE_URL } from "type/common";
 
 // Type
 import { TodoType } from "type/todo";
+import { PAGE_URL } from "type/common";
 
 interface TodoItemProps {
-    todoId: string,
+    todo: TodoType,
 };
-const TodoItem: FC<TodoItemProps> = ({ todoId }) => {
-
-    const [todo, setTodo] = useState<TodoType>();
-
-    const getTodo = useCallback(async () => {
-        const data = await TODO_API.getTodo(todoId);
-        setTodo(prev => data);
-    },[setTodo, todoId]);
-
-    useEffect(() => {
-        getTodo();
-    },[getTodo, todoId]);
+const TodoItem: FC<TodoItemProps> = ({ todo }) => {
 
     const navigation = useNavigate();
     const handleClick = useCallback(() => {
-        navigation(`${PAGE_URL.TODO}/${todoId}`)
-    },[navigation, todoId]);
+        navigation(`${PAGE_URL.TODO}/${todo.id}`)
+    },[navigation, todo]);
 
     return (
         todo ?
         <tr>
-            <td style={{ textAlign: 'center' }} onClick={() => handleClick()}>{todo.title}</td>
+            <td style={{ textAlign: 'left' }} onClick={() => handleClick()}>{todo.title}</td>
         </tr>
         : null
     );

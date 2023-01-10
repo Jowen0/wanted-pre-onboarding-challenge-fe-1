@@ -1,55 +1,59 @@
-import { TODO_API } from "api/todo";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { PAGE_URL } from "type/common";
+
+// API
+import { TODO_API } from "api/todo";
+
+// Hook
+import { useTryCatch } from "hook/useTryCatch";
 
 // Type
+import { PAGE_URL } from "type/common";
 import { TodoStatus, TodoType, TODO_STATUS } from "type/todo";
 
 interface ButtonListProps {
     status: TodoStatus,
     todoInfo: TodoType,
+    handleTodoId: (id: string) => void,
     handleTodoStatus: (status: TodoStatus) => void,
 };
-const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoStatus }) => {
+const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoId, handleTodoStatus }) => {
 
+    const { apiFn } = useTryCatch();
     const navigation = useNavigate();
+
+    // 목록
+    const handleList = useCallback(() => {
+        handleTodoId("");
+        handleTodoStatus(TODO_STATUS.LIST);
+        navigation(`${PAGE_URL.TODO}`);
+    }, [handleTodoId, handleTodoStatus, navigation]);
+
     // 등록
     const handleCreate = async () => {
-        try {
-            const outPut:TodoType = await TODO_API.createTodo(todoInfo);
+        const outPut = await apiFn(() => TODO_API.createTodo(todoInfo), '등록 오류');
+        if (outPut) {
             alert('등록 완료');
+            handleTodoStatus(TODO_STATUS.READ);
             navigation(`${PAGE_URL.TODO}/${outPut.id}`);
-        }
-        catch (error) {
-            alert('등록 오류');
-            console.log(error);
         };
     };
 
     // 수정
     const handleUpdate = async () => {
-        try {
-            await TODO_API.updateTodo(todoInfo);
+        const outPut = await apiFn(() => TODO_API.updateTodo(todoInfo), '수정 오류');
+        if (outPut) {
             alert('수정 완료');
             handleTodoStatus(TODO_STATUS.READ);
-        }
-        catch (error) {
-            alert('수정 오류');
-            console.log(error);
         };
     };
 
     // 삭제
     const handleDelete = async () => {
-        try {
-            await TODO_API.deleteTodo(todoInfo.id);
+        const outPut = await apiFn(() => TODO_API.deleteTodo(todoInfo.id), '삭제 오류');
+        if (outPut === null) {
             alert('삭제 완료');
-            navigation(`${PAGE_URL.TODO}`);
-        }
-        catch (error) {
-            alert('삭제 오류');
-            console.log(error);
+            handleList();
         };
     };
 
@@ -59,7 +63,7 @@ const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoStatus })
             case TODO_STATUS.READ:
                 return (
                     <div>
-                        <button onClick={() => handleTodoStatus(TODO_STATUS.LIST)}>목록</button>
+                        <button onClick={() => handleList()}>목록</button>
                         <button onClick={() => handleTodoStatus(TODO_STATUS.UPDATE)}>수정</button>
                         <button onClick={() => handleDelete()}>삭제</button>
                     </div>
@@ -67,7 +71,7 @@ const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoStatus })
             case TODO_STATUS.CREATE:
                 return (
                     <div>
-                        <button onClick={() => handleTodoStatus(TODO_STATUS.LIST)}>목록</button>
+                        <button onClick={() => handleList()}>목록</button>
                         <button onClick={() => handleCreate()}>등록</button>
                     </div>
                 );
