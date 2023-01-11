@@ -8,17 +8,17 @@ import { TODO_STATUS } from "type/todo";
 import { TODO_API } from "api/todo";
 
 // Hook
-import { useTryCatch } from "hook/useTryCatch";
-import { useTodos } from "./hook/useTodos";
-import { useStatus } from "./hook/useStatus";
-import { useTodoId } from "./hook/useTodoId";
+import { useTryCatch } from "hook/common/useTryCatch";
+import { useTodos } from "hook/todo/useTodos";
+import { useTodoId } from "hook/todo/useTodoId";
+import { useStatus } from "hook/todo/useStatus";
 
 // HOC
-import WithAuth from "hoc/withAuth";
+import WithAuth from "hoc/WithAuth";
 
 // Component
-import TodoList from "./component/list";
-import TodoDetail from "./component/detail";
+import TodoList from "./list";
+import TodoDetail from "./detail";
 
 const TodoContainer: FC = () => {
 

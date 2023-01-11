@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { PAGE_URL } from "type/common";
 
 // Hook
-import { useToken } from "hook/useToken";
+import { useToken } from "hook/common/useToken";
 
 export interface WithAuthType {
     handleHasToken?: (hasToken: boolean) => void,

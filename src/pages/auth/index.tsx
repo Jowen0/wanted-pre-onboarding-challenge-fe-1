@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { PAGE_URL } from "type/common";
 
 // Component
-import Login from "./component/login";
-import SignUp from "./component/signUp";
-import { useToken } from "../../hook/useToken";
+import Login from "./login";
+import SignUp from "./signUp";
+import { useToken } from "../../hook/common/useToken";
 
 const AuthContainer = () => {
 

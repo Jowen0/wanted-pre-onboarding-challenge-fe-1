@@ -1,16 +1,16 @@
 import { FC } from "react";
 
 // HOC
-import WithAuth from "hoc/withAuth";
+import WithAuth from "hoc/WithAuth";
 
 // Type
-import { WithAuthType } from "hoc/withAuth";
+import { WithAuthType } from "hoc/WithAuth";
 
 // API
 import { AUTH_API } from "api/auth";
 
 // Hook
-import { useToken } from "hook/useToken";
+import { useToken } from "hook/common/useToken";
 
 const Header: FC<WithAuthType> = ({ handleHasToken }) => {
 

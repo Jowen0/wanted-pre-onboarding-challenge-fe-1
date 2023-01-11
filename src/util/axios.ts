@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Token Key
-import { TOKEN_KEY } from "hook/useToken";
+import { TOKEN_KEY } from "hook/common/useToken";
 
 // Type
 import { PAGE_URL } from "type/common";
@@ -10,7 +10,7 @@ export const axiosInstance = axios.create({
     headers: {
         "Accept": "application/json; charset=UTF-8",
         "Content-Type": "application/json",
-        Authorization : `${localStorage.getItem(TOKEN_KEY)}`
+        // Authorization : `${localStorage.getItem(TOKEN_KEY)}`
     }
 });
 
@@ -23,10 +23,8 @@ axiosInstance.interceptors.request.use(
             throw Error('로그인 세션이 만료되었습니다.');
         };
 
-        const tempHeader = config.headers as any;
-        tempHeader.Authorization = token;
-        config.headers = tempHeader;
-        // config.headers.Authorization = token;
+        //@ts-expect-error
+        config.headers.Authorization = token;
 
         return config;
     },
