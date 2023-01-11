@@ -7,8 +7,9 @@ import { PAGE_URL } from "type/common";
 // Component
 import Login from "./component/login";
 import SignUp from "./component/signUp";
+import { useToken } from "../../hook/useToken";
 
-const Auth = () => {
+const AuthContainer = () => {
 
     // 로그인 페이지 여부 확인
     const [isLogin, setIsLogin] = useState(true);
@@ -16,20 +17,18 @@ const Auth = () => {
         setIsLogin(prev => value);
     }, [setIsLogin]);
 
+    // 토큰
+    const { hasToken, handleHasToken, getTokenFromLocalStorage } = useToken();
+    
     // 토큰 존재할 시 리다이렉트
-    const [token, setToken] = useState('');
-    const handleToken = (token: string) => {
-        setToken(token);
-    };
-
     const navigation = useNavigate();
     useEffect(() => {
-        if (token || localStorage.getItem('token')) navigation(PAGE_URL.TODO);
-    }, [navigation, token]);
+        if (hasToken || getTokenFromLocalStorage()) navigation(PAGE_URL.TODO);
+    }, [navigation, hasToken, getTokenFromLocalStorage]);
 
     return (
-        isLogin ? <Login handleIsLogin={handleIsLogin} handleToken={handleToken} /> : <SignUp handleIsLogin={handleIsLogin} handleToken={handleToken} />
+        isLogin ? <Login handleIsLogin={handleIsLogin} handleHasToken={handleHasToken} /> : <SignUp handleIsLogin={handleIsLogin} handleHasToken={handleHasToken} />
     );
 }
 
-export default Auth;
+export default AuthContainer;

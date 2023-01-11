@@ -1,57 +1,57 @@
-import { FC, useCallback, useLayoutEffect, useState } from "react";
+import { FC, useLayoutEffect } from "react";
 import { useParams } from "react-router-dom";
 
 // Type
-import { TodoStatus, TodoType, TODO_STATUS } from "type/todo";
-import { WithAuthType } from "pages/auth/component/withAuth";
+import { TODO_STATUS } from "type/todo";
 
 // API
 import { TODO_API } from "api/todo";
 
 // Hook
 import { useTryCatch } from "hook/useTryCatch";
+import { useTodos } from "./hook/useTodos";
+import { useStatus } from "./hook/useStatus";
+import { useTodoId } from "./hook/useTodoId";
+
+// HOC
+import WithAuth from "hoc/withAuth";
 
 // Component
-import WithAuth from "pages/auth/component/withAuth";
-import TodoList from "./list";
-import TodoDetail from "./detail";
+import TodoList from "./component/list";
+import TodoDetail from "./component/detail";
 
-const TodoContainer: FC<WithAuthType> = () => {
+const TodoContainer: FC = () => {
 
-    const [todos, setTodos] = useState<TodoType[]>([]);
-    const [todoId, setTodoId] = useState("");
-    const [status, setStatus] = useState<TodoStatus>(TODO_STATUS.LIST);
+    const { todos, handleTodos } = useTodos();
+    const { status, handleTodoStatus } = useStatus();
+    const { todoId, handleTodoId } = useTodoId();
 
     // TodoList 데이터 가져오기
     const { apiFn } = useTryCatch();
     useLayoutEffect(() => {
 
         const getTodos = async () => {
-            const outPut = await apiFn(() => TODO_API.getTodoList(), "리스트 에러");
-            if(outPut) setTodos(prev => outPut);
+            const resTodos = await apiFn(() => TODO_API.getTodoList(), "리스트 에러");
+            if(resTodos) handleTodos(resTodos);
         };
+
         getTodos();
         
-    }, [apiFn, status]);
+    }, [apiFn, status, handleTodos]);
 
     // TodoId 세팅
     const { id } = useParams();
-    const handleTodoId = useCallback((id: string) => {
-        setTodoId(prev => id);
-    }, [setTodoId]);
     useLayoutEffect(() => {
 
         const reg = /\d/g;
+
         if (todos.length > 0 && id && reg.test(id)) {
             handleTodoId(id);
         };
+        
     }, [id, todos, handleTodoId]);
 
     // 상태 설정
-    const handleTodoStatus = useCallback((status: TodoStatus) => {
-        setStatus(prev => status);
-    }, [setStatus]);
-
     useLayoutEffect(() => {
         if (todos.length > 0 && id && status === TODO_STATUS.LIST) {
             handleTodoStatus(TODO_STATUS.READ);

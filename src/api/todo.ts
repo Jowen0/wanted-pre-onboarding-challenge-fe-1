@@ -1,54 +1,42 @@
-// Hook
-import { useAxios } from "hook/useAxios";
+// Util
+import { axiosInstance } from "util/axios";
 
 // Type
 import { TodoType } from "type/todo";
 
-const getTodoList = async () => {
-  const authorization = localStorage.getItem("token") || '';
-  const res = await useAxios.get(TODO_URL.TODOS, authorization);
-  return res.data as TodoType[];
+const getTodoList = async (): Promise<TodoType[]> => {
+  
+  const res = await axiosInstance.get(TODO_URL.TODOS);
+  return res.data.data;
 };
 
-const getTodo = async (todoId: string) => {
+const getTodo = async (todoId: string): Promise<TodoType> => {
 
-  const authorization = localStorage.getItem("token") || '';
-  const res = await useAxios.get(`${TODO_URL.TODOS}/${todoId}`, authorization);
-  return res.data as TodoType;
+  const res = await axiosInstance.get(`${TODO_URL.TODOS}/${todoId}`);
+  return res.data.data;
 };
 
-const createTodo = async (todoInfo: TodoType) => {
+const createTodo = async (todoInfo: TodoType): Promise<TodoType> => {
 
-  const authorization = localStorage.getItem("token") || '';
   const createdAt = new Date().toISOString();
   const updatedAt = new Date().toISOString();
 
-  const res = await useAxios.post(
-    TODO_URL.TODOS,
-    { ...todoInfo, createdAt, updatedAt },
-    authorization
-  );
-  return res.data  as TodoType;
+  const res = await axiosInstance.post(TODO_URL.TODOS, { ...todoInfo, createdAt, updatedAt });
+  return res.data.data;
 };
 
-const updateTodo = async (todoInfo: TodoType) => {
-  
-  const authorization = localStorage.getItem("token") || '';
+const updateTodo = async (todoInfo: TodoType): Promise<TodoType> => {
+
   const updatedAt = new Date().toISOString();
 
-  const res = await useAxios.put(
-    `${TODO_URL.TODOS}/${todoInfo.id}`,
-    { ...todoInfo, updatedAt },
-    authorization
-  );
-  return res.data as TodoType;
+  const res = await axiosInstance.put(`${TODO_URL.TODOS}/${todoInfo.id}`, { ...todoInfo, updatedAt });
+  return res.data.data;
 };
 
-const deleteTodo = async (todoId: string) => {
+const deleteTodo = async (todoId: string): Promise<{ data: null }> => {
 
-  const authorization = localStorage.getItem("token") || '';
-  const res = await useAxios.del(`${TODO_URL.TODOS}/${todoId}`, authorization);
-  return res.data;
+  const res = await axiosInstance.delete(`${TODO_URL.TODOS}/${todoId}`);
+  return res.data.data;
 };
 
 export const TODO_API = {

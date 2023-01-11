@@ -1,41 +1,39 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 
 // API
 import { AUTH_API } from "api/auth";
 
 // Hook
 import { useAuth } from "pages/auth/hook/useAuth";
-
-// Type
-import { AuthResult } from "type/auth";
+import { useToken } from "hook/useToken";
+import { useTryCatch } from "hook/useTryCatch";
 
 // Component
-import Input from "pages/common/atom/Input";
+import Input from "component/atom/Input";
 
 interface LoginProps {
     handleIsLogin: (value: boolean) => void,
-    handleToken: (token: string) => void,
+    handleHasToken: (isToken: boolean) => void,
 };
-const Login: FC<LoginProps> = ({ handleIsLogin, handleToken }) => {
+const Login: FC<LoginProps> = ({ handleIsLogin, handleHasToken }) => {
 
     // 로그인 정보
     const { authInfo, handleAuthInfo, isValidated } = useAuth();
     const { email, password } = authInfo;
 
-    // 로그인
-    const handleLogin = async () => {
+    const { setTokenInLocalStorage } = useToken();
 
-        try {
-            const outPut: AuthResult = await AUTH_API.login(authInfo);
-            alert(outPut.message);
-            localStorage.setItem('token', outPut.token);
-            handleToken(outPut.token);
-        }
-        catch (error) {
-            alert('로그인 에러!');
-            console.log(error);
+    // 로그인
+    const { apiFn } = useTryCatch();
+    const handleLogin = useCallback(async () => {
+
+        const authResult = await apiFn(() => AUTH_API.login(authInfo), '로그인 에러!');
+        if (authResult) {
+            alert(authResult.message);
+            setTokenInLocalStorage(authResult.token);
+            handleHasToken(true);
         };
-    };
+    }, [apiFn, authInfo, handleHasToken, setTokenInLocalStorage]);
 
     // 회원가입 컴포넌트로 변경
     const changeToSignUp = () => {

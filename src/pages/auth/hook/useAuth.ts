@@ -20,13 +20,14 @@ export const useAuth = () => {
     // 이메일/비밀번호 유효성검사
     const validateAuthInfo = useCallback(() => {
 
-        let res = false;
-        const reg = /[0-9a-zA-Z]@[a-z].[a-z]{2,3}/;
+        let isValidated = false;
+        const emailReg = /[0-9a-zA-Z]@[a-z].[a-z]{2,3}/;
 
-        if (email === "" || !reg.test(email)) res = true;
-        else if (password === "" || password.length < 8) res = true;
+        if (email === "" || !emailReg.test(email)) isValidated = true;
+        else if (password === "" || password.length < 8) isValidated = true;
 
-        return res;
+        return isValidated;
+        
     }, [email, password]);
 
     const [isValidated, setIsValidated] = useState(false);

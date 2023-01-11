@@ -2,7 +2,6 @@ import { FC, useCallback, useLayoutEffect, useState } from "react";
 
 // Type
 import { TodoStatus, TodoType, TODO_STATUS } from "type/todo";
-import { WithAuthType } from "pages/auth/component/withAuth";
 
 // Hook
 import { useTryCatch } from "hook/useTryCatch";
@@ -11,10 +10,10 @@ import { useTryCatch } from "hook/useTryCatch";
 import { TODO_API } from "api/todo";
 
 // Component
-import Input from "pages/common/atom/Input";
-import ButtonList from "../common/ButtonList";
+import Input from "component/atom/Input";
+import ButtonList from "./ButtonList";
 
-interface TodoDetailProps extends WithAuthType {
+interface TodoDetailProps {
     todoId?: string,
     status: TodoStatus,
     handleTodoId: (id: string) => void,

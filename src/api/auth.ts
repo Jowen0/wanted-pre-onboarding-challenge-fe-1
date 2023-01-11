@@ -1,43 +1,29 @@
-import { useAxios } from "hook/useAxios";
-import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+// Util
+import { axiosInstance } from "util/axios";
 
 // Type
-import { AuthInfo } from "type/auth";
-import { PAGE_URL } from "type/common";
+import { AuthInfo, AuthResult } from "type/auth";
 
-const signUp = (params: AuthInfo) => {
+const signUp = async (params: AuthInfo): Promise<AuthResult> => {
 
-    return useAxios.post(AUTH_URL.SING_UP, params);
+    const res = await axiosInstance.post(AUTH_URL.SING_UP, params);
+    return res.data;
 };
 
-const login = (params: AuthInfo) => {
+const login = async (params: AuthInfo): Promise<AuthResult> => {
 
-    return useAxios.post(AUTH_URL.LOGIN, params);
+    const res = await axiosInstance.post(AUTH_URL.LOGIN, params);
+    return res.data;
 };
 
 const logOut = () => {
-    localStorage.removeItem('token');
-};
-
-const useCheckToken = () => {
-
-    const navigation = useNavigate();
-    return useCallback(() => {
-        const token = localStorage.getItem('token') || '';
-        if (!token) {
-            alert('로그인 토큰이 만료되었습니다.');
-            navigation(PAGE_URL.LOGIN);
-        };
-        return token;
-    },[navigation]);
+    return true;
 };
 
 export const AUTH_API = {
     signUp,
     login,
     logOut,
-    useCheckToken,
 };
 
 const AUTH_URL = {
