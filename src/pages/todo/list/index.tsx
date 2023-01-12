@@ -34,7 +34,7 @@ const TodoList: FC<TodoListProps> = ({ todos, todoId, status, handleTodos, handl
 
         getTodos();
 
-    }, [apiFn, todoId, handleTodos]);
+    }, [apiFn, todoId, status, handleTodos]);
 
     return (
         <Div width="100%" minHeight="278px" padding="5px 30px 5px 5px" borderRight="1px solid #ccc">
