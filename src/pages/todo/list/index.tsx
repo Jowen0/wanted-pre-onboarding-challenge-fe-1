@@ -1,20 +1,42 @@
-import { FC } from "react";
+import { FC, useLayoutEffect } from "react";
 
 // Type
 import { TodoStatus, TodoType } from "type/todo";
 
 // Component
 import TodoItem from "./TodoItem";
+import Div from "component/atom/Div";
+import { useTryCatch } from "hook/common/useTryCatch";
+import { TODO_API } from "api/todo";
+import Button from "component/atom/Button";
 
 interface TodoListProps {
     todos: TodoType[],
+    handleTodos: (todos: TodoType[]) => void,
+    todoId: string,
     status: TodoStatus,
 };
-const TodoList: FC<TodoListProps> = ({ todos, status }) => {
+const TodoList: FC<TodoListProps> = ({ todos, handleTodos, todoId, status }) => {
+
+    // TodoList 데이터 가져오기
+    const { apiFn } = useTryCatch();
+    useLayoutEffect(() => {
+
+        const getTodos = async () => {
+            const resTodos = await apiFn(() => TODO_API.getTodoList(), "리스트 에러");
+            if (resTodos) handleTodos(resTodos);
+        };
+
+        getTodos();
+
+    }, [apiFn, todoId, handleTodos]);
 
     return (
-        <div>
-            <div>Todo List</div>
+        <Div width="100%" minHeight="278px" padding="5px 30px 5px 5px" borderRight="1px solid #ccc">
+            <Div display="flex" justifyContent="end">
+                <Div width="80%" display="flex" justifyContent="center">TODO LIST</Div>
+                <Button onClick={() => console.log('등록')} text="등록" />
+            </Div>
             <table>
                 <thead>
                     <tr>
@@ -29,7 +51,7 @@ const TodoList: FC<TodoListProps> = ({ todos, status }) => {
                     {todos.length === 0 && <tr><td>데이터가 없습니다.</td></tr>}
                 </tbody>
             </table>
-        </div>
+        </Div>
     );
 }
 

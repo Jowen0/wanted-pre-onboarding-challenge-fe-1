@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 
 // API
@@ -10,27 +10,23 @@ import { useTryCatch } from "hook/common/useTryCatch";
 // Type
 import { PAGE_URL } from "type/common";
 import { TodoStatus, TodoType, TODO_STATUS } from "type/todo";
+import Button from "component/atom/Button";
+
+// Component
+import Div from "component/atom/Div";
 
 interface ButtonListProps {
     status: TodoStatus,
     todoInfo: TodoType,
-    handleTodoId: (id: string) => void,
     handleTodoStatus: (status: TodoStatus) => void,
 };
-const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoId, handleTodoStatus }) => {
+const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoStatus }) => {
 
     const { apiFn } = useTryCatch();
     const navigation = useNavigate();
 
-    // 목록
-    const handleList = useCallback(() => {
-        handleTodoId("");
-        handleTodoStatus(TODO_STATUS.LIST);
-        navigation(`${PAGE_URL.TODO}`);
-    }, [handleTodoId, handleTodoStatus, navigation]);
-
     // 등록
-    const handleCreate = async () => {
+    const createTodo = async () => {
         const outPut = await apiFn(() => TODO_API.createTodo(todoInfo), '등록 오류');
         if (outPut) {
             alert('등록 완료');
@@ -40,7 +36,7 @@ const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoId, handl
     };
 
     // 수정
-    const handleUpdate = async () => {
+    const updateTodo = async () => {
         const outPut = await apiFn(() => TODO_API.updateTodo(todoInfo), '수정 오류');
         if (outPut) {
             alert('수정 완료');
@@ -48,12 +44,12 @@ const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoId, handl
         };
     };
 
-    // 삭제
-    const handleDelete = async () => {
+    // 삭제 - 모달 추가예정
+    const deleteTodo = async () => {
         const outPut = await apiFn(() => TODO_API.deleteTodo(todoInfo.id), '삭제 오류');
         if (outPut === null) {
             alert('삭제 완료');
-            handleList();
+            navigation(`${PAGE_URL.TODO}`);
         };
     };
 
@@ -63,32 +59,31 @@ const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoId, handl
             case TODO_STATUS.READ:
                 return (
                     <div>
-                        <button onClick={() => handleList()}>목록</button>
-                        <button onClick={() => handleTodoStatus(TODO_STATUS.UPDATE)}>수정</button>
-                        <button onClick={() => handleDelete()}>삭제</button>
+                        <Button onClick={() => handleTodoStatus(TODO_STATUS.UPDATE)} text='수정' />
+                        <Button backgroundColor="#ff6666" onClick={() => deleteTodo()} text='삭제'/>
                     </div>
                 );
             case TODO_STATUS.CREATE:
                 return (
                     <div>
-                        <button onClick={() => handleList()}>목록</button>
-                        <button onClick={() => handleCreate()}>등록</button>
+                        <Button onClick={() => handleTodoStatus(TODO_STATUS.READ)} text='취소'/>
+                        <Button onClick={() => createTodo()} text='등록'/>
                     </div>
                 );
             case TODO_STATUS.UPDATE:
                 return (
                     <div>
-                        <button onClick={() => handleTodoStatus(TODO_STATUS.READ)}>취소</button>
-                        <button onClick={() => handleUpdate()}>수정</button>
+                        <Button onClick={() => handleTodoStatus(TODO_STATUS.READ)} text='취소'/>
+                        <Button onClick={() => updateTodo()} text='수정'/>
                     </div>
                 );
         };
-    }
+    };
 
     return (
-        <>
+        <Div justifyContent="end" display="flex">
             {ButtonComponent()}
-        </>
+        </Div>
     );
 }
 

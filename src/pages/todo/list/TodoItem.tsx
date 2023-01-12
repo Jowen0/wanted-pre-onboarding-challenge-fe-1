@@ -12,14 +12,16 @@ interface TodoItemProps {
 const TodoItem: FC<TodoItemProps> = ({ todo, status }) => {
 
     const navigation = useNavigate();
-    const handleClick = useCallback(() => {
-        if(status !== TODO_STATUS.CREATE) navigation(`${PAGE_URL.TODO}/${todo.id}`);
+    const changeDetail = useCallback(() => {
+        if(status !== TODO_STATUS.CREATE) {
+            navigation(`${PAGE_URL.TODO}/${todo.id}`)
+        };
     },[navigation, todo, status]);
 
     return (
         todo ?
         <tr>
-            <td style={{ textAlign: 'left' }} onClick={() => handleClick()}>{todo.title}</td>
+            <td style={{ textAlign: 'left' }} onClick={() => changeDetail()}>{todo.title}</td>
         </tr>
         : null
     );

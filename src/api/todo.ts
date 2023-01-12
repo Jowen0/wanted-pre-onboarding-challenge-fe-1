@@ -18,16 +18,16 @@ const getTodo = async (todoId: string): Promise<TodoType> => {
 
 const createTodo = async (todoInfo: TodoType): Promise<TodoType> => {
 
-  const createdAt = new Date().toISOString();
-  const updatedAt = new Date().toISOString();
+  const createdAt = new Date();
+  const updatedAt = new Date();
 
-  const res = await axiosInstance.post(TODO_URL.TODOS, { ...todoInfo, createdAt, updatedAt });
+  const res = await axiosInstance.post(TODO_URL.TODOS, { ...todoInfo, id:'', createdAt, updatedAt });
   return res.data.data;
 };
 
 const updateTodo = async (todoInfo: TodoType): Promise<TodoType> => {
 
-  const updatedAt = new Date().toISOString();
+  const updatedAt = new Date();
 
   const res = await axiosInstance.put(`${TODO_URL.TODOS}/${todoInfo.id}`, { ...todoInfo, updatedAt });
   return res.data.data;

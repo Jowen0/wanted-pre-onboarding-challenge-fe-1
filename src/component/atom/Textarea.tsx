@@ -1,7 +1,7 @@
 import { ChangeEventHandler, FC } from "react";
 import styled from "styled-components";
 
-const InputAtom = styled.input`
+const TextareaAtom = styled.textarea`
     padding: 10px;
     color: gray;
     font-size: 16px;
@@ -9,12 +9,11 @@ const InputAtom = styled.input`
     line-height: 1.5;
     font-weight: 400;
     border-radius: 10px;
-    border-width: thin;
     width: 100%;
+    min-height: 100px;
 `;
 
-interface InputProps {
-    type?: string,
+interface TextareaProps {
     name: string,
     value: string,
     placeholder?: string,
@@ -22,8 +21,7 @@ interface InputProps {
     disable?: boolean,
     handleData: (key: string, value: string) => void
 };
-const Input: FC<InputProps> = ({
-    type = 'text',
+const Textarea: FC<TextareaProps> = ({
     name,
     value,
     placeholder = '',
@@ -33,15 +31,14 @@ const Input: FC<InputProps> = ({
 }) => {
 
     // 데이터 입력
-    const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const handleInput: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
         const key = e.target.name;
         const value = e.target.value;
         handleData(key, value);
     };
 
     return (
-        <InputAtom
-            type={type}
+        <TextareaAtom
             name={name}
             value={value}
             placeholder={placeholder}
@@ -52,4 +49,4 @@ const Input: FC<InputProps> = ({
     );
 }
 
-export default Input;
+export default Textarea;

@@ -10,17 +10,13 @@ React를 개발한 기간은 1년으로 챌린지를 통해서 프론트엔드 �
 # 프로젝트 일지
 ### 1/9 - CSS를 제외한 로직 구현에 집중(미적 감각이 부족한거 절대 아님!!!ㅎㅎㅠ) / 챌린지가 진행하는 동안 CSS 적용 예정  
 
-### 1/11 - 강의 내용을 기반으로 코드 리팩토링
-- 1. 관심사 분리가 모호한 부분을 리팩토링
-
-```
-
-```
-** **
-- 2. 타입스크립트의 타입 단언 없애기
+### 1/11 - 강의 내용을 기반으로 코드 리팩토링 ver 1.0
+- 1. 타입스크립트의 타입 단언 없애기
 
 **Before**
 ```
+// api/auth.ts
+
 const getTodo = async (todoId: string) => {
 
   const authorization = localStorage.getItem("token") || '';
@@ -31,6 +27,8 @@ const getTodo = async (todoId: string) => {
 
 **After**
 ```
+// api/auth.ts
+
 const getTodo = async (todoId: string): Promise<TodoType> => {
 
   const authorization = localStorage.getItem("token") || '';
@@ -39,10 +37,11 @@ const getTodo = async (todoId: string): Promise<TodoType> => {
 };
 ```
 ** **
-- 3. 토큰 관련 애매한 소스 리팩토링: 토큰 값을 넘겨주는 것이 아닌데 state명이 token을 담아야 할것 같이 느껴짐
-
+- 2. 토큰 관련 애매한 소스 리팩토링: 토큰 값을 넘겨주는 것이 아닌데 state명이 token을 담아야 할것 같이 느껴짐  
 **Before**
 ```
+// pages/auth/index.tsx
+
 // 토큰 존재할 시 리다이렉트
 const [token, setToken] = useState('');
 const handleToken = (token: string) => {
@@ -57,6 +56,8 @@ useEffect(() => {
 
 **After**
 ```
+// pages/auth/index.tsx
+
 // 토큰
 const { hasToken, handleHasToken, getTokenFromLocalStorage } = useToken();
 
@@ -67,7 +68,8 @@ useEffect(() => {
 }, [navigation, hasToken]);
 
 
-// useToken Hook
+// hook/auth/useAuth.ts
+
 export const useToken = (defaultHasToken?: boolean) => {
 
     const [hasToken, setHasToken] = useState(defaultHasToken || false);
@@ -97,3 +99,6 @@ export const useToken = (defaultHasToken?: boolean) => {
     };
 };
 ```
+<!-- 
+### 1/12 - 강의 내용을 기반으로 코드 리팩토링 ver 2.0
+- 1. 타입스크립트의 타입 단언 없애기 -->

@@ -1,14 +1,11 @@
-import { FC, useLayoutEffect } from "react";
-import { useParams } from "react-router-dom";
+import { FC, Suspense, useEffect, useLayoutEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary";
 
 // Type
-import { TODO_STATUS } from "type/todo";
-
-// API
-import { TODO_API } from "api/todo";
+import { PAGE_URL } from "type/common";
 
 // Hook
-import { useTryCatch } from "hook/common/useTryCatch";
 import { useTodos } from "hook/todo/useTodos";
 import { useTodoId } from "hook/todo/useTodoId";
 import { useStatus } from "hook/todo/useStatus";
@@ -19,6 +16,8 @@ import WithAuth from "hoc/WithAuth";
 // Component
 import TodoList from "./list";
 import TodoDetail from "./detail";
+import Div from "component/atom/Div";
+import Loading from "component/Loading";
 
 const TodoContainer: FC = () => {
 
@@ -26,46 +25,33 @@ const TodoContainer: FC = () => {
     const { status, handleTodoStatus } = useStatus();
     const { todoId, handleTodoId } = useTodoId();
 
-    // TodoList 데이터 가져오기
-    const { apiFn } = useTryCatch();
-    useLayoutEffect(() => {
-
-        const getTodos = async () => {
-            const resTodos = await apiFn(() => TODO_API.getTodoList(), "리스트 에러");
-            if(resTodos) handleTodos(resTodos);
-        };
-
-        getTodos();
-        
-    }, [apiFn, status, handleTodos]);
-
-    // TodoId 세팅
     const { id } = useParams();
+
+    // 첫 로딩 시 ID url 설정
+    const navigation = useNavigate();
+    useEffect(() => {
+        if (!id && todos.length > 0) navigation(`${PAGE_URL.TODO}/${todos[0].id}`);
+    }, [id, todos, navigation]);
+
+    // ID params으로 todoId 설정
     useLayoutEffect(() => {
-
-        const reg = /\d/g;
-
-        if (todos.length > 0 && id && reg.test(id)) {
-            handleTodoId(id);
-        };
-        
-    }, [id, todos, handleTodoId]);
-
-    // 상태 설정
-    useLayoutEffect(() => {
-        if (todos.length > 0 && id && status === TODO_STATUS.LIST) {
-            handleTodoStatus(TODO_STATUS.READ);
-        };
-    }, [id, todos, status, handleTodoStatus]);
+        if (id) handleTodoId(id);
+    }, [id, handleTodoId]);
 
     return (
-        <>
-            <div>
-                {status === TODO_STATUS.LIST && <button onClick={() => handleTodoStatus(TODO_STATUS.CREATE)}>등록</button>}
-            </div>
-            <TodoList todos={todos} status={status} />
-            {status !== TODO_STATUS.LIST && <TodoDetail todoId={todoId} status={status} handleTodoId={handleTodoId} handleTodoStatus={handleTodoStatus} />}
-        </>
+        <Div width="70%" display="flex" justifyContent="center" padding="5% 15% 5% 15%" alignItems="normal">
+            <ErrorBoundary fallback={<div>Error</div>} onError={err => console.log('리스트 에러', err)}>
+                <Suspense fallback={<Loading />}>
+                    <TodoList todos={todos} handleTodos={handleTodos} todoId={todoId} status={status} />
+                </Suspense>
+            </ErrorBoundary>
+
+            <ErrorBoundary fallback={<div>Error</div>} onError={err => console.log(err)}>
+                <Suspense fallback={<Loading />}>
+                    <TodoDetail todoId={todoId} status={status} handleTodoStatus={handleTodoStatus} />
+                </Suspense>
+            </ErrorBoundary>
+        </Div>
     );
 }
 
