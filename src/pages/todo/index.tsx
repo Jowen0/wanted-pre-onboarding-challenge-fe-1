@@ -18,12 +18,15 @@ import TodoList from "./list";
 import TodoDetail from "./detail";
 import Div from "component/atom/Div";
 import Loading from "component/Loading";
+import CreateTodoModal from "./modal/CreateTodoModal";
+import { useModal } from "hook/common/useModal";
 
 const TodoContainer: FC = () => {
 
     const { todos, handleTodos } = useTodos();
     const { status, handleTodoStatus } = useStatus();
     const { todoId, handleTodoId } = useTodoId();
+    const { isPop, handleIsPop } = useModal();
 
     const { id } = useParams();
 
@@ -42,7 +45,7 @@ const TodoContainer: FC = () => {
         <Div width="70%" display="flex" justifyContent="center" padding="5% 15% 5% 15%" alignItems="normal">
             <ErrorBoundary fallback={<div>Error</div>} onError={err => console.log('리스트 에러', err)}>
                 <Suspense fallback={<Loading />}>
-                    <TodoList todos={todos} handleTodos={handleTodos} todoId={todoId} status={status} />
+                    <TodoList todos={todos} handleTodos={handleTodos} todoId={todoId} status={status} handleIsPop={handleIsPop} />
                 </Suspense>
             </ErrorBoundary>
 
@@ -51,6 +54,7 @@ const TodoContainer: FC = () => {
                     <TodoDetail todoId={todoId} status={status} handleTodoStatus={handleTodoStatus} />
                 </Suspense>
             </ErrorBoundary>
+            {isPop && <CreateTodoModal handleIsPop={handleIsPop} />}
         </Div>
     );
 }

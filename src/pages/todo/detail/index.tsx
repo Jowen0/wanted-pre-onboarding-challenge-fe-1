@@ -1,7 +1,7 @@
 import { FC, useCallback, useLayoutEffect } from "react";
 
 // Type
-import { TodoStatus, TODO_STATUS } from "type/todo";
+import { TodoStatus } from "type/todo";
 
 // Hook
 import { useTryCatch } from "hook/common/useTryCatch";
@@ -11,11 +11,10 @@ import { useTodoInfo } from "hook/todo/useTodoInfo";
 import { TODO_API } from "api/todo";
 
 // Component
-import Input from "component/atom/Input";
 import ButtonList from "./ButtonList";
-import Textarea from "component/atom/Textarea";
-import Labal from "component/atom/Label";
 import Div from "component/atom/Div";
+import TodoTitle from "./TodoTitle";
+import TodoContent from "./TodoContent";
 
 interface TodoDetailProps {
     todoId?: string,
@@ -41,15 +40,9 @@ const TodoDetail: FC<TodoDetailProps> = ({ todoId = "", status, handleTodoStatus
 
     return (
         <Div width="100%">
-            <ButtonList status={status} todoInfo={todoInfo} handleTodoStatus={handleTodoStatus} /> 
-            <Div display="flex">
-                <Labal text="제목" />
-                <Input name="title" value={title} disable={status === TODO_STATUS.READ} handleData={handleTodoInfoProperty} />
-            </Div>
-            <Div display="flex" margin="20px 5px 5px 5px">
-                <Labal text="내용" />
-                <Textarea name="content" value={content} disable={status === TODO_STATUS.READ} handleData={handleTodoInfoProperty} />
-            </Div>
+            <ButtonList status={status} todoInfo={todoInfo} handleTodoStatus={handleTodoStatus} />
+            <TodoTitle title={title} handleTodoInfoProperty={handleTodoInfoProperty} />
+            <TodoContent content={content} handleTodoInfoProperty={handleTodoInfoProperty} />
         </Div>
 
     );

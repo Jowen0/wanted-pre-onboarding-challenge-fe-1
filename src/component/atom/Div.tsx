@@ -7,9 +7,11 @@ interface divProps {
     display: 'block' | 'flex',
     alignItems: 'normal' | 'center' | 'end',
     justifyContent: 'normal' | 'center' | 'end',
+    flexDirection: 'row' | 'column',
     padding: string,
     margin: string,
     borderRight: string,
+    zIndex: string,
 };
 const DivAtom = styled.div<divProps>`
     font-size: 16px;
@@ -19,9 +21,11 @@ const DivAtom = styled.div<divProps>`
     display: ${props => props.display};
     align-items: ${props => props.alignItems};
     justify-content: ${props => props.justifyContent};
+    flex-direction: ${props => props.flexDirection};
     padding: ${props => props.padding};
     margin: ${props => props.margin};
     border-right: ${props => props.borderRight};
+    z-index: ${props => props.zIndex};
 `
 
 interface DivProps {
@@ -31,9 +35,11 @@ interface DivProps {
     display?: 'block' | 'flex',
     alignItems?: 'normal' | 'center' | 'end',
     justifyContent?: 'normal' | 'center' | 'end',
+    flexDirection?: 'row' | 'column',
     padding?: string,
     margin?: string,
     borderRight?: string,
+    zIndex?: string,
 };
 const Div: FC<DivProps> = ({
     children,
@@ -42,9 +48,11 @@ const Div: FC<DivProps> = ({
     display = 'block',
     alignItems = 'center',
     justifyContent = 'normal',
+    flexDirection = 'row',
     padding = '5px',
     margin = '5px',
     borderRight = '',
+    zIndex = '0',
 }) => {
     return (
         <DivAtom
@@ -53,9 +61,11 @@ const Div: FC<DivProps> = ({
             display={display}
             alignItems={alignItems}
             justifyContent={justifyContent}
+            flexDirection={flexDirection}
             padding={padding}
             margin={margin}
             borderRight={borderRight}
+            zIndex={zIndex}
         >
             {children}
         </DivAtom>

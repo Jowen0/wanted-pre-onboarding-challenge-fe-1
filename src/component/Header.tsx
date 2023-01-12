@@ -30,7 +30,7 @@ const Header: FC<WithAuthType> = ({ handleHasToken }) => {
     return (
         <Div width="85%" display="flex" justifyContent="end" padding="20px 0 0 0">
             <span>게으름뱅이님 안녕하세요</span>
-            <Button color="#fff" backgroundColor="#003366" onClick={handleLogOut} text='로그아웃' />
+            <Button width="100px" color="#fff" backgroundColor="#003366" onClick={handleLogOut} text='로그아웃' />
         </Div>
     );
 }
