@@ -43,7 +43,7 @@ const Button: FC<ButtonProps> = ({
     height = '40px',
     color = '#333',
     borderColor = '#ccc',
-    backgroundColor = '#ccc',
+    backgroundColor = '',
 }) => {
     return (
         <ButtonAtom

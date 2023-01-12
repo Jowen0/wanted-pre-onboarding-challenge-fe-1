@@ -60,21 +60,14 @@ const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoStatus })
                 return (
                     <div>
                         <Button onClick={() => handleTodoStatus(TODO_STATUS.UPDATE)} text='수정' />
-                        <Button backgroundColor="#ff6666" onClick={() => deleteTodo()} text='삭제'/>
-                    </div>
-                );
-            case TODO_STATUS.CREATE:
-                return (
-                    <div>
-                        <Button onClick={() => handleTodoStatus(TODO_STATUS.READ)} text='취소'/>
-                        <Button onClick={() => createTodo()} text='등록'/>
+                        <Button backgroundColor="#fa8b8b" onClick={() => deleteTodo()} text='삭제'/>
                     </div>
                 );
             case TODO_STATUS.UPDATE:
                 return (
                     <div>
                         <Button onClick={() => handleTodoStatus(TODO_STATUS.READ)} text='취소'/>
-                        <Button onClick={() => updateTodo()} text='수정'/>
+                        <Button backgroundColor="#beffcc" onClick={() => updateTodo()} text='수정'/>
                     </div>
                 );
         };

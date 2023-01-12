@@ -25,8 +25,8 @@ const InnerWrapper = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: column;
-    background-color: #ffa3a3;
-    border: 5px solid #ffa3a3;
+    background-color: #b0d6ff; //#ffa3a3;
+    border: 5px solid #b0d6ff; //#ffa3a3;
     border-radius: 10px;
 `
 
@@ -60,7 +60,7 @@ const Modal:FC<ModalProps> = ({header, content, handleIsPop}) => {
             <InnerWrapper>
                 <ModalHeader>
                     {header}
-                    <Button text="X" onClick={() => handleIsPop(false)} width={''} backgroundColor={'#ffa3a3'} />
+                    <Button text="X" onClick={() => handleIsPop(false)} width={''} backgroundColor={'#b0d6ff'} />
                 </ModalHeader>
                 <ModalContent>
                     {content}

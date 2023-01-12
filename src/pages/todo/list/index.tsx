@@ -40,7 +40,7 @@ const TodoList: FC<TodoListProps> = ({ todos, todoId, status, handleTodos, handl
         <Div width="100%" minHeight="278px" padding="5px 30px 5px 5px" borderRight="1px solid #ccc">
             <Div display="flex" justifyContent="end">
                 <Div width="80%" display="flex" justifyContent="center">TODO LIST</Div>
-                <Button onClick={() => handleIsPop(true)} text="등록" />
+                <Button backgroundColor="#b0d6ff" onClick={() => handleIsPop(true)} text="등록" />
             </Div>
             <table>
                 <thead>
