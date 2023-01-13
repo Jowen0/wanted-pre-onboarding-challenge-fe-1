@@ -18,14 +18,15 @@ const WithAuth = <P extends WithAuthType>(Component: ComponentType<P>): FC<any &
 
         // 로그인 토큰 체크
         const navigation = useNavigate();
+        const token = getTokenFromLocalStorage();
         useEffect(() => {
-            if (!hasToken && !getTokenFromLocalStorage()) {
+            if (!hasToken || !token) {
                 alert('로그인 세션이 만료되었습니다');
                 navigation(PAGE_URL.LOGIN);
             };
-        }, [hasToken, navigation, getTokenFromLocalStorage]);
+        }, [hasToken, navigation, token]);
 
-        return <Component handleHasToken={handleHasToken} {...prop} />
+        return token ? <Component handleHasToken={handleHasToken} {...prop} /> : null;
     };
 
     return (

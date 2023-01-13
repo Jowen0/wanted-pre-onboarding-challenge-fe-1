@@ -17,7 +17,7 @@ const TodoTitle:FC<TodoTitleProps> = ({title, status, handleTodoInfoProperty }) 
     return ( 
         <Div display="flex">
             {/* <Labal text="제목" /> */}
-            <Input name="title" value={title} placeholder={'제목을 입력하세요'} disable={status === TODO_STATUS.READ} handleData={handleTodoInfoProperty} />
+            <Input name="title" value={title} placeholder={'제목을 입력하세요'} disabled={status === TODO_STATUS.READ} handleData={handleTodoInfoProperty} />
         </Div>
      );
 }

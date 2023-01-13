@@ -19,7 +19,7 @@ interface InputProps {
     value: string,
     placeholder?: string,
     autoComplete?: string,
-    disable?: boolean,
+    disabled?: boolean,
     handleData: (key: string, value: string) => void
 };
 const Input: FC<InputProps> = ({
@@ -28,7 +28,7 @@ const Input: FC<InputProps> = ({
     value,
     placeholder = '',
     autoComplete = 'off',
-    disable = false,
+    disabled = false,
     handleData,
 }) => {
 
@@ -46,7 +46,7 @@ const Input: FC<InputProps> = ({
             value={value}
             placeholder={placeholder}
             autoComplete={autoComplete}
-            disabled={disable}
+            disabled={disabled}
             onChange={handleInput}
         />
     );

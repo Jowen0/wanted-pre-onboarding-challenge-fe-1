@@ -11,6 +11,8 @@ import { useTryCatch } from "hook/common/useTryCatch";
 // Component
 import Input from "component/atom/Input";
 import Div from "component/atom/Div";
+import Button from "component/atom/Button";
+import Form from "component/atom/Form";
 
 interface LoginProps {
     handleIsLogin: (value: boolean) => void,
@@ -43,19 +45,23 @@ const Login: FC<LoginProps> = ({ handleIsLogin, handleHasToken }) => {
 
     return (
         <Div width="70%" display="flex" justifyContent="center" padding="5% 15% 5% 15%" alignItems="normal">
-            <Div>
-                <Div width="30%">
-                    <Input name={"email"} value={email} placeholder={"이메일을 입력하세요"} autoComplete={"off"} handleData={handleAuthInfo} />
-                </Div>
-                <Div width="30%">
-                    <Input type={"password"} name={"password"} value={password} placeholder={"8자리 이상 패스워드를 입력하세요"} autoComplete={"off"} handleData={handleAuthInfo} />
-                </Div>
-                <Div>
-                    <button disabled={!isValidated} onClick={handleLogin}>로그인</button>
-                    <button onClick={changeToSignUp}>회원가입</button>
-                </Div>
+            <Div margin="20% 0 0 0">
+                <Form display="flex" justifyContent="center" flexDirection="column" onSubmit={() => console.log('')}>
+                    <Div display="flex" justifyContent="center" flexDirection="column">
+                        <Div width="20%">
+                            <Input name={"email"} value={email} placeholder={"이메일을 입력하세요"} autoComplete={"off"} handleData={handleAuthInfo} />
+                        </Div>
+                        <Div width="20%">
+                            <Input type={"password"} name={"password"} value={password} placeholder={"8자리 이상 패스워드를 입력하세요"} autoComplete={"off"} handleData={handleAuthInfo} />
+                        </Div>
+                    </Div>
+                    <Div display="flex" justifyContent="center">
+                        <Button text="로그인" width="100px" disabled={!isValidated} backgroundColor="#beffcc" onClick={handleLogin} />
+                        <Button text="회원가입" width="100px" backgroundColor="#b0d6ff" onClick={changeToSignUp} />
+                    </Div>
+                </Form>
             </Div>
-        </Div>
+        </Div >
     );
 }
 

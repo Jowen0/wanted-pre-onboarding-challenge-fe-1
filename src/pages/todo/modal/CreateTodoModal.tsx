@@ -33,7 +33,8 @@ const CreateTodoModal:FC<CreateTodoModalProps> = ({handleIsPop}) => {
     };
 
     return ( 
-        <Modal 
+        <Modal
+            backgroundColor="#d3e8ff"
             content={
                 <>
                     <TodoTitle title={title} handleTodoInfoProperty={handleTodoInfoProperty} />

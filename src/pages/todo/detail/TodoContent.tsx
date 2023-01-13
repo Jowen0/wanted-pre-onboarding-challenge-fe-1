@@ -17,7 +17,7 @@ const TodoContent:FC<TodoContentProps> = ({content, status, handleTodoInfoProper
     return ( 
         <Div display="flex" margin="20px 5px 5px 5px">
             {/* <Labal text="내용" /> */}
-            <Textarea name="content" value={content} placeholder={'내용을 입력하세요'}  disable={status === TODO_STATUS.READ} handleData={handleTodoInfoProperty} />
+            <Textarea name="content" value={content} placeholder={'내용을 입력하세요'}  disabled={status === TODO_STATUS.READ} handleData={handleTodoInfoProperty} />
         </Div>
      );
 }

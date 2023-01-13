@@ -41,8 +41,8 @@ const TodoDetail: FC<TodoDetailProps> = ({ todoId = "", status, handleTodoStatus
     return (
         <Div width="100%">
             <ButtonList status={status} todoInfo={todoInfo} handleTodoStatus={handleTodoStatus} />
-            <TodoTitle title={title} handleTodoInfoProperty={handleTodoInfoProperty} />
-            <TodoContent content={content} handleTodoInfoProperty={handleTodoInfoProperty} />
+            <TodoTitle title={title} status={status} handleTodoInfoProperty={handleTodoInfoProperty} />
+            <TodoContent content={content} status={status} handleTodoInfoProperty={handleTodoInfoProperty} />
         </Div>
 
     );

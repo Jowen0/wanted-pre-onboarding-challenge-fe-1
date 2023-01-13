@@ -1,4 +1,4 @@
-import { FC, Suspense, useEffect, useLayoutEffect } from "react";
+import { FC, Suspense, useCallback, useEffect, useLayoutEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -9,6 +9,7 @@ import { PAGE_URL } from "type/common";
 import { useTodos } from "hook/todo/useTodos";
 import { useTodoId } from "hook/todo/useTodoId";
 import { useStatus } from "hook/todo/useStatus";
+import { useModal } from "hook/common/useModal";
 
 // HOC
 import WithAuth from "hoc/WithAuth";
@@ -19,7 +20,7 @@ import TodoDetail from "./detail";
 import Div from "component/atom/Div";
 import Loading from "component/Loading";
 import CreateTodoModal from "./modal/CreateTodoModal";
-import { useModal } from "hook/common/useModal";
+import { usePopState } from "hook/common/usePopState";
 
 const TodoContainer: FC = () => {
 
@@ -41,11 +42,28 @@ const TodoContainer: FC = () => {
         if (id) handleTodoId(id);
     }, [id, handleTodoId]);
 
+    // 뒤로가기 시 이전 Todo URL로 이동
+    const moveToPrevTodoWithBack = useCallback(() => {
+        
+        const prevTodoId = todos?.reduce((todoId, currentTodo, index) => {
+            if (index > 0 && currentTodo.id === id) todoId = todos[index - 1].id;
+            return todoId;
+        }, '');
+        
+        if(!prevTodoId) return;
+
+        window.history.pushState(null, '', `${PAGE_URL.TODO}/${prevTodoId}`);
+        window.history.pushState(null, '', `${PAGE_URL.TODO}/${id}`);
+
+    }, [id, todos]);
+
+    usePopState(moveToPrevTodoWithBack);
+
     return (
         <Div width="70%" display="flex" justifyContent="center" padding="5% 15% 5% 15%" alignItems="normal">
             <ErrorBoundary fallback={<div>Error</div>} onError={err => console.log('리스트 에러', err)}>
                 <Suspense fallback={<Loading />}>
-                    <TodoList todos={todos} handleTodos={handleTodos} todoId={todoId} status={status} handleIsPop={handleIsPop} />
+                    <TodoList todos={todos} handleTodos={handleTodos} todoId={todoId} status={status} handleTodoStatus={handleTodoStatus} handleIsPop={handleIsPop} />
                 </Suspense>
             </ErrorBoundary>
 

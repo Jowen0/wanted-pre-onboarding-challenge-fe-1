@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Hook
+import { usePopState } from "hook/common/usePopState";
+import { useToken } from "../../hook/common/useToken";
+
 // Type
 import { PAGE_URL } from "type/common";
 
 // Component
 import Login from "./login";
 import SignUp from "./signUp";
-import { useToken } from "../../hook/common/useToken";
 
 const AuthContainer = () => {
 
@@ -25,6 +28,15 @@ const AuthContainer = () => {
     useEffect(() => {
         if (hasToken || getTokenFromLocalStorage()) navigation(PAGE_URL.TODO);
     }, [navigation, hasToken, getTokenFromLocalStorage]);
+
+    // 뒤로가기 방지
+    const preventBack = useCallback(() => {
+        if (!hasToken || !getTokenFromLocalStorage()) {
+            window.history.pushState(null, '', PAGE_URL.LOGIN);
+        };
+    }, [hasToken, getTokenFromLocalStorage]);
+
+    usePopState(preventBack);
 
     return (
         isLogin ? <Login handleIsLogin={handleIsLogin} handleHasToken={handleHasToken} /> : <SignUp handleIsLogin={handleIsLogin} handleHasToken={handleHasToken} />

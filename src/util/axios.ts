@@ -18,7 +18,7 @@ axiosInstance.interceptors.request.use(
     (config) => {
 
         const token = localStorage.getItem(TOKEN_KEY);
-        if (!config.url?.includes('/login') === !token) {
+        if (!(config.url?.includes('/login') || config.url?.includes('/create')) && !token) {
             window.location.pathname = PAGE_URL.LOGIN;
             throw Error('로그인 세션이 만료되었습니다.');
         };

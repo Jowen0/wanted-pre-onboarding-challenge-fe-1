@@ -1,6 +1,5 @@
 import { FC, ReactNode } from "react";
 import styled from "styled-components"
-import Button from "./atom/Button";
 
 const ModalWrapper = styled.div`
     position: fixed;
@@ -15,18 +14,17 @@ const ModalWrapper = styled.div`
     background: rgba(0, 0, 0, 0.6);
 `;
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled.div<{backgroundColor: string}>`
     font-size: 16px;
     font-family: 'Noto Sans KR',sans-serif;
     width: 30%;
-    height: 30%;
     margin: 5px;
-    padding: 5% 5% 5% 0%;
+    padding: 0% 5% 0% 0%;
     display: flex;
-    justify-content: center;
+    justify-content: normal;
     flex-direction: column;
-    background-color: #b0d6ff; //#ffa3a3;
-    border: 5px solid #b0d6ff; //#ffa3a3;
+    background-color: ${props => props.backgroundColor}; //#d3e8ff; //#ffa3a3;
+    border: 5px solid ${props => props.backgroundColor}; //#ffa3a3;
     border-radius: 10px;
 `
 
@@ -38,6 +36,14 @@ const ModalHeader = styled.div`
     justify-content: end;
 `;
 
+const ModalContentWrapper = styled.div`
+    width: 100%;
+    padding: 25px 35px 25px 25px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+`;
+
 const ModalContent = styled.div`
     width: 100%;
     padding: 25px 35px 25px 25px;
@@ -47,24 +53,73 @@ const ModalContent = styled.div`
     flex-direction: column;
 `;
 
+const ModalBottomWrapper = styled.div`
+    width: 100%;
+    padding: 0px 35px 0px 25px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    flex-direction: end;
+`;
+
+const CloseButtonWrapper = styled.div`
+    width: 110%;
+    display: flex;
+    justify-content: end;
+    padding: 5px;
+    margin: 5px;
+    margin-bottom: -50px;
+    z-index: 10;
+`;
+
+const CloseButton = styled.button<{backgroundColor: string}>`
+    display: flex;
+    justify-content: end;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Noto Sans KR',sans-serif;
+    height: 40px;
+    color: #333;
+    background-color: ${props => props.backgroundColor};
+    border-color: #ccc;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    padding: 6px;
+    margin-left: 5px;
+`
 
 interface ModalProps {
     header?: ReactNode,
     content?: ReactNode,
+    button?: ReactNode,
+    backgroundColor?: string,
     handleIsPop: (isPop: boolean) => void,
 };
-const Modal:FC<ModalProps> = ({header, content, handleIsPop}) => {
+const Modal:FC<ModalProps> = ({
+    header,
+    content,
+    button,
+    backgroundColor = "#fff",
+    handleIsPop
+}) => {
 
     return ( 
         <ModalWrapper>
-            <InnerWrapper>
+            <InnerWrapper backgroundColor={backgroundColor}>
+                <CloseButtonWrapper>
+                    <CloseButton backgroundColor={backgroundColor} onClick={() => handleIsPop(false)}>X</CloseButton>
+                </CloseButtonWrapper>
                 <ModalHeader>
                     {header}
-                    <Button text="X" onClick={() => handleIsPop(false)} width={''} backgroundColor={'#b0d6ff'} />
                 </ModalHeader>
-                <ModalContent>
-                    {content}
-                </ModalContent>
+                <ModalContentWrapper>
+                    <ModalContent>
+                        {content}
+                    </ModalContent>
+                </ModalContentWrapper>
+                <ModalBottomWrapper>
+                    {button}
+                </ModalBottomWrapper>
             </InnerWrapper>
         </ModalWrapper>
      );

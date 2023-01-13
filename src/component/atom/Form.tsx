@@ -1,7 +1,8 @@
 import { FC, ReactNode } from "react";
+
 import styled from "styled-components";
 
-interface DivAtomProps {
+interface FormAtomProps {
     width: string,
     minHeight: string,
     display: 'block' | 'flex',
@@ -10,10 +11,9 @@ interface DivAtomProps {
     flexDirection: 'row' | 'column',
     padding: string,
     margin: string,
-    borderRight: string,
-    zIndex: string,
 };
-const DivAtom = styled.div<DivAtomProps>`
+
+const FormAtom = styled.form<FormAtomProps>`
     font-size: 16px;
     font-family: 'Noto Sans KR', sans-serif;
     width: ${props => props.width};
@@ -22,14 +22,11 @@ const DivAtom = styled.div<DivAtomProps>`
     align-items: ${props => props.alignItems};
     justify-content: ${props => props.justifyContent};
     flex-direction: ${props => props.flexDirection};
-    padding: ${props => props.padding};
-    margin: ${props => props.margin};
-    border-right: ${props => props.borderRight};
-    z-index: ${props => props.zIndex};
-`
+`;
 
-interface DivProps {
+interface FormProps {
     children: ReactNode,
+    onSubmit?: () => void,
     width?: string,
     minHeight?: string,
     display?: 'block' | 'flex',
@@ -38,24 +35,21 @@ interface DivProps {
     flexDirection?: 'row' | 'column',
     padding?: string,
     margin?: string,
-    borderRight?: string,
-    zIndex?: string,
 };
-const Div: FC<DivProps> = ({
+const Form:FC<FormProps> = ({
     children,
+    onSubmit,
     width = '100%',
     minHeight = '',
     display = 'block',
-    alignItems = 'center',
+    alignItems = 'normal',
     justifyContent = 'normal',
     flexDirection = 'row',
     padding = '5px',
     margin = '5px',
-    borderRight = '',
-    zIndex = '0',
 }) => {
-    return (
-        <DivAtom
+    return ( 
+        <FormAtom 
             width={width}
             minHeight={minHeight}
             display={display}
@@ -64,12 +58,11 @@ const Div: FC<DivProps> = ({
             flexDirection={flexDirection}
             padding={padding}
             margin={margin}
-            borderRight={borderRight}
-            zIndex={zIndex}
+            onSubmit={onSubmit}
         >
             {children}
-        </DivAtom>
-    );
+        </FormAtom>
+     );
 }
-
-export default Div;
+ 
+export default Form;

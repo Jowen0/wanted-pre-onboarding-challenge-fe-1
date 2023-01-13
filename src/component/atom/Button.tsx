@@ -10,13 +10,13 @@ interface ButtonAtomProps {
 };
 
 const ButtonAtom = styled.button<ButtonAtomProps>`
-    cursor: pointer;
+    cursor: ${props => props.disabled ? 'normal' : 'pointer'};
     font-size: 16px;
     font-family: 'Noto Sans KR', sans-serif;
     width: ${props => props.width};
     height: ${props => props.height};
     color: ${props => props.color};
-    background-color: ${props => props.backgroundColor};
+    background-color: ${props => props.disabled ? 'rgba(239, 239, 239, 0.3)' : props.backgroundColor};
     border-color: ${props => props.borderColor};
     border-radius: 4px;
     border: 1px solid transparent;
@@ -27,8 +27,8 @@ const ButtonAtom = styled.button<ButtonAtomProps>`
 
 interface ButtonProps {
     text: string,
-    disalbed?: boolean,
-    onClick: () => void,
+    disabled?: boolean,
+    onClick?: () => void,
     width?: string,
     height?: string,
     color?: string,
@@ -37,7 +37,7 @@ interface ButtonProps {
 };
 const Button: FC<ButtonProps> = ({
     text,
-    disalbed = false,
+    disabled = false,
     onClick,
     width = '70px',
     height = '40px',
@@ -47,7 +47,7 @@ const Button: FC<ButtonProps> = ({
 }) => {
     return (
         <ButtonAtom
-            disabled={disalbed}
+            disabled={disabled}
             onClick={onClick}
             width={width}
             height={height}

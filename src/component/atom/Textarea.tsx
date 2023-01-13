@@ -18,7 +18,7 @@ interface TextareaProps {
     value: string,
     placeholder?: string,
     autoComplete?: string,
-    disable?: boolean,
+    disabled?: boolean,
     handleData: (key: string, value: string) => void
 };
 const Textarea: FC<TextareaProps> = ({
@@ -26,7 +26,7 @@ const Textarea: FC<TextareaProps> = ({
     value,
     placeholder = '',
     autoComplete = 'off',
-    disable = false,
+    disabled = false,
     handleData,
 }) => {
 
@@ -43,7 +43,7 @@ const Textarea: FC<TextareaProps> = ({
             value={value}
             placeholder={placeholder}
             autoComplete={autoComplete}
-            disabled={disable}
+            disabled={disabled}
             onChange={handleInput}
         />
     );
