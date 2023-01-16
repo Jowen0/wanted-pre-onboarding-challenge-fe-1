@@ -10,7 +10,7 @@ import { useToken } from "hook/common/useToken";
 export interface WithAuthType {
     handleHasToken?: (hasToken: boolean) => void,
 };
-const WithAuth = <P extends WithAuthType>(Component: ComponentType<P>): FC<any & Omit<P, keyof WithAuthType>> => {
+const WithAuth = <P extends WithAuthType>(Component: ComponentType<P>): FC<Omit<P, keyof WithAuthType>> => {
 
     const Wrapper = (prop: any) => {
 

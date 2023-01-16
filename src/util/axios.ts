@@ -4,13 +4,13 @@ import axios from "axios";
 import { TOKEN_KEY } from "hook/common/useToken";
 
 // Type
+import { AUTH_URL } from "api/auth";
 import { PAGE_URL } from "type/common";
 
 export const axiosInstance = axios.create({
     headers: {
         "Accept": "application/json; charset=UTF-8",
         "Content-Type": "application/json",
-        // Authorization : `${localStorage.getItem(TOKEN_KEY)}`
     }
 });
 
@@ -18,7 +18,7 @@ axiosInstance.interceptors.request.use(
     (config) => {
 
         const token = localStorage.getItem(TOKEN_KEY);
-        if (!(config.url?.includes('/login') || config.url?.includes('/create')) && !token) {
+        if (!(config.url?.includes(AUTH_URL.LOGIN) || config.url?.includes(AUTH_URL.SING_UP)) && !token) {
             window.location.pathname = PAGE_URL.LOGIN;
             throw Error('로그인 세션이 만료되었습니다.');
         };
@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     (error) => {
-        if(error.message) alert(error.message)
+        if(error instanceof Error) alert(error.message);
         else return Promise.reject(error);
     }
 );

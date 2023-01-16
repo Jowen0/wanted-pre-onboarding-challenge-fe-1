@@ -36,7 +36,7 @@ const AuthContainer = () => {
         };
     }, [hasToken, getTokenFromLocalStorage]);
 
-    usePopState(preventBack);
+    // usePopState(preventBack);
 
     return (
         isLogin ? <Login handleIsLogin={handleIsLogin} handleHasToken={handleHasToken} /> : <SignUp handleIsLogin={handleIsLogin} handleHasToken={handleHasToken} />
