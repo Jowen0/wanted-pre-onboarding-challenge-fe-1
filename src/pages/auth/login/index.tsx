@@ -1,12 +1,11 @@
 import { FC, useCallback } from "react";
 
 // API
-import { AUTH_API } from "api/auth";
+import { useLogin } from "api/auth";
 
 // Hook
 import { useAuth } from "hook/auth/useAuth";
 import { useToken } from "hook/common/useToken";
-import { useTryCatch } from "hook/common/useTryCatch";
 
 // Component
 import Input from "component/atom/Input";
@@ -27,16 +26,17 @@ const Login: FC<LoginProps> = ({ handleIsLogin, handleHasToken }) => {
     const { setTokenInLocalStorage } = useToken();
 
     // 로그인
-    const { apiFn } = useTryCatch();
+    const { refetch: refetchLogin } = useLogin(authInfo);
     const handleLogin = useCallback(async () => {
 
-        const authResult = await apiFn(() => AUTH_API.login(authInfo), '로그인 에러!');
-        if (authResult) {
-            alert(authResult.message);
-            setTokenInLocalStorage(authResult.token);
+        const { data: resAuth } = await refetchLogin();
+        if (resAuth) {
+            alert(resAuth.message);
+            setTokenInLocalStorage(resAuth.token);
             handleHasToken(true);
         };
-    }, [apiFn, authInfo, handleHasToken, setTokenInLocalStorage]);
+
+    }, [refetchLogin, setTokenInLocalStorage, handleHasToken]);
 
     // 회원가입 컴포넌트로 변경
     const changeToSignUp = () => {
@@ -46,7 +46,7 @@ const Login: FC<LoginProps> = ({ handleIsLogin, handleHasToken }) => {
     return (
         <Div width="70%" display="flex" justifyContent="center" padding="5% 15% 5% 15%" alignItems="normal">
             <Div margin="20% 0 0 0">
-                <Form display="flex" justifyContent="center" flexDirection="column" onSubmit={() => console.log('')}>
+                <Form display="flex" justifyContent="center" flexDirection="column">
                     <Div display="flex" justifyContent="center" flexDirection="column">
                         <Div width="20%">
                             <Input name={"email"} value={email} placeholder={"이메일을 입력하세요"} autoComplete={"off"} handleData={handleAuthInfo} />

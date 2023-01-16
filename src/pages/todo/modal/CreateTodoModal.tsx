@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 
 // API
-import { TODO_API } from "api/todo";
+import { useCreateTodo } from "api/todo";
 
 // Type
 import { PAGE_URL } from "type/common";
@@ -25,9 +25,12 @@ const CreateTodoModal:FC<CreateTodoModalProps> = ({handleIsPop}) => {
     const {todoInfo, handleTodoInfoProperty} = useTodoInfo();
     const { title, content } = todoInfo;
 
+    const createTodoMutation = useCreateTodo();
+
     const navigation = useNavigate();
+    
     const createTodo = async () => {
-        const resTodo = await TODO_API.createTodo(todoInfo);
+        const resTodo = await createTodoMutation.mutateAsync(todoInfo);
         handleIsPop(false);
         navigation(`${PAGE_URL.TODO}/${resTodo.id}`);
     };

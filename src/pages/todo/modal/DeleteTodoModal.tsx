@@ -2,10 +2,7 @@ import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 
 // API
-import { TODO_API } from "api/todo";
-
-// Hook
-import { useTryCatch } from "hook/common/useTryCatch";
+import { useDeleteTodo } from "api/todo";
 
 // Type
 import { PAGE_URL } from "type/common";
@@ -21,11 +18,12 @@ interface DeleteTodoModalProps {
 };
 const DeleteTodoModal:FC<DeleteTodoModalProps> = ({todoId, handleIsPop}) => {
 
-    const { apiFn } = useTryCatch();
-
+    const deleteTodoMutation = useDeleteTodo();
     const navigation = useNavigate()
+
     const deleteTodo = async () => {
-        const res = await apiFn(() => TODO_API.deleteTodo(todoId), '삭제 오류');
+
+        const res = await deleteTodoMutation.mutateAsync(todoId);
         if (res === null) {
             alert('삭제 완료');
             handleIsPop(false);

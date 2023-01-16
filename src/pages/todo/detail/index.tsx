@@ -1,14 +1,13 @@
-import { FC, useCallback, useLayoutEffect } from "react";
+import { FC, useLayoutEffect } from "react";
 
 // Type
 import { TodoStatus } from "type/todo";
 
 // Hook
-import { useTryCatch } from "hook/common/useTryCatch";
 import { useTodoInfo } from "hook/todo/useTodoInfo";
 
 // API
-import { TODO_API } from "api/todo";
+import { useGetTodo } from "api/todo";
 
 // Component
 import ButtonList from "./ButtonList";
@@ -27,23 +26,22 @@ const TodoDetail: FC<TodoDetailProps> = ({ todoId = "", status, handleTodoStatus
     const { todoInfo, handleTodoInfo, handleTodoInfoProperty } = useTodoInfo();
     const { title, content } = todoInfo;
 
-    // Todo 데이터 가져오기
-    const { apiFn } = useTryCatch();
-    const getTodo = useCallback(async (id: string) => {
-         const todoResult = await apiFn(() => TODO_API.getTodo(id), "상세 에러");
-         if (todoResult) handleTodoInfo(todoResult);
-    }, [handleTodoInfo, apiFn]);
+    // Todo Data Fetch
+    const { data: resTodo } = useGetTodo(todoId);
 
+    // After Todo Fetch
     useLayoutEffect(() => {
-        if(todoId) getTodo(todoId);
-    },[todoId, getTodo]);
+        if(resTodo) handleTodoInfo(resTodo);
+    },[resTodo, handleTodoInfo]);
 
     return (
+        resTodo ?
         <Div width="100%">
             <ButtonList status={status} todoInfo={todoInfo} handleTodoStatus={handleTodoStatus} />
             <TodoTitle title={title} status={status} handleTodoInfoProperty={handleTodoInfoProperty} />
             <TodoContent content={content} status={status} handleTodoInfoProperty={handleTodoInfoProperty} />
         </Div>
+        : null
 
     );
 }

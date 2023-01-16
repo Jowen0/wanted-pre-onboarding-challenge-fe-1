@@ -1,5 +1,5 @@
-import { FC, Suspense, useCallback, useEffect, useLayoutEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { FC, Suspense, useCallback, useLayoutEffect } from "react";
+import { useParams } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 
 // Type
@@ -10,6 +10,7 @@ import { useTodos } from "hook/todo/useTodos";
 import { useTodoId } from "hook/todo/useTodoId";
 import { useStatus } from "hook/todo/useStatus";
 import { useModal } from "hook/common/useModal";
+import { usePopState } from "hook/common/usePopState";
 
 // HOC
 import WithAuth from "hoc/WithAuth";
@@ -20,22 +21,14 @@ import TodoDetail from "./detail";
 import Div from "component/atom/Div";
 import Loading from "component/Loading";
 import CreateTodoModal from "./modal/CreateTodoModal";
-import { usePopState } from "hook/common/usePopState";
 
 const TodoContainer: FC = () => {
 
-    const { todos, handleTodos } = useTodos();
-    const { status, handleTodoStatus } = useStatus();
-    const { todoId, handleTodoId } = useTodoId();
-    const { isPop, handleIsPop } = useModal();
-
     const { id } = useParams();
-
-    // 첫 로딩 시 ID url 설정
-    const navigation = useNavigate();
-    useEffect(() => {
-        if (!id && todos.length > 0) navigation(`${PAGE_URL.TODO}/${todos[0].id}`);
-    }, [id, todos, navigation]);
+    const { getQueryTodos } = useTodos();
+    const { todoId, handleTodoId } = useTodoId();
+    const { status, handleTodoStatus } = useStatus();
+    const { isPop: isCreateModalPop, handleIsPop: handleIsCreateModalPop } = useModal();
 
     // ID params으로 todoId 설정
     useLayoutEffect(() => {
@@ -44,18 +37,19 @@ const TodoContainer: FC = () => {
 
     // 뒤로가기 시 이전 Todo URL로 이동
     const moveToPrevTodoWithBack = useCallback(() => {
-        
+
+        const todos = getQueryTodos();
         const prevTodoId = todos?.reduce((todoId, currentTodo, index) => {
             if (index > 0 && currentTodo.id === id) todoId = todos[index - 1].id;
             return todoId;
         }, '');
-        
-        if(!prevTodoId) return;
+
+        if (!prevTodoId) return;
 
         window.history.pushState(null, '', `${PAGE_URL.TODO}/${prevTodoId}`);
         window.history.pushState(null, '', `${PAGE_URL.TODO}/${id}`);
 
-    }, [id, todos]);
+    }, [id, getQueryTodos]);
 
     usePopState(moveToPrevTodoWithBack);
 
@@ -63,7 +57,7 @@ const TodoContainer: FC = () => {
         <Div width="70%" display="flex" justifyContent="center" padding="5% 15% 5% 15%" alignItems="normal">
             <ErrorBoundary fallback={<div>Error</div>} onError={err => console.log('리스트 에러', err)}>
                 <Suspense fallback={<Loading />}>
-                    <TodoList todos={todos} handleTodos={handleTodos} todoId={todoId} status={status} handleTodoStatus={handleTodoStatus} handleIsPop={handleIsPop} />
+                    <TodoList todoId={todoId} handleTodoStatus={handleTodoStatus} handleIsPop={handleIsCreateModalPop} />
                 </Suspense>
             </ErrorBoundary>
 
@@ -72,7 +66,7 @@ const TodoContainer: FC = () => {
                     <TodoDetail todoId={todoId} status={status} handleTodoStatus={handleTodoStatus} />
                 </Suspense>
             </ErrorBoundary>
-            {isPop && <CreateTodoModal handleIsPop={handleIsPop} />}
+            {isCreateModalPop && <CreateTodoModal handleIsPop={handleIsCreateModalPop} />}
         </Div>
     );
 }

@@ -1,10 +1,9 @@
 import { FC } from "react";
 
 // API
-import { TODO_API } from "api/todo";
+import { useUpdateTodo } from "api/todo";
 
 // Hook
-import { useTryCatch } from "hook/common/useTryCatch";
 import { useModal } from "hook/common/useModal";
 
 // Type
@@ -23,11 +22,11 @@ interface ButtonListProps {
 const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoStatus }) => {
 
     const {isPop, handleIsPop} = useModal();
-    const { apiFn } = useTryCatch();
+    const updateTodoMutation = useUpdateTodo();
 
     // 수정
     const updateTodo = async () => {
-        const resTodo = await apiFn(() => TODO_API.updateTodo(todoInfo), '수정 오류');
+        const resTodo = await updateTodoMutation.mutateAsync(todoInfo);
         if (resTodo) {
             alert('수정 완료');
             handleTodoStatus(TODO_STATUS.READ);

@@ -1,12 +1,11 @@
 import { FC, useCallback } from "react";
 
 // API
-import { AUTH_API } from "api/auth";
+import { useSignUp } from "api/auth";
 
 // Hook
 import { useAuth } from "hook/auth/useAuth";
 import { useToken } from "hook/common/useToken";
-import { useTryCatch } from "hook/common/useTryCatch";
 
 // Component
 import Input from "component/atom/Input";
@@ -28,16 +27,16 @@ const SignUp: FC<SignUpProps> = ({ handleIsLogin, handleHasToken }) => {
     const { setTokenInLocalStorage } = useToken();
 
     // 회원가입
-    const { apiFn } = useTryCatch();
+    const signUpMutation = useSignUp();
     const handleSignUp = useCallback(async () => {
 
-        const authResult = await apiFn(() => AUTH_API.signUp(authInfo), '회원가입 에러!');
+        const authResult = await signUpMutation.mutateAsync(authInfo);
         if (authResult) {
             alert(authResult.message);
             setTokenInLocalStorage(authResult.token);
             handleHasToken(true);
         };
-    }, [apiFn, authInfo, handleHasToken, setTokenInLocalStorage]);
+    }, [signUpMutation, authInfo, handleHasToken, setTokenInLocalStorage]);
 
     return (
         <Div width="70%" display="flex" justifyContent="center" padding="5% 15% 5% 15%" alignItems="normal">
