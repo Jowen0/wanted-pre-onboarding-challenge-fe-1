@@ -1,17 +1,8 @@
-<!-- # 자기소개서
-안녕하세요 저는 2년차 개발자 장민우 입니다.  
-
-React를 개발한 기간은 1년으로 챌린지를 통해서 프론트엔드 개발지식을 쌓는 것이 목표입니다.  
-
-요즘 가장 관심을 가지고 있는 부분은 관심사 분리와 디자인 패턴을 활용한 디렉토리 구조 입니다.  
-
-개발에 관한 다양한 의견은 언제든지 환영합니다. -->
-
 # 프로젝트 일지
 ### 1/9 - CSS를 제외한 로직 구현에 집중(미적 감각이 부족한거 절대 아님!!!ㅎㅎㅠ) / 챌린지가 진행하는 동안 CSS 적용 예정  
 
 ### 1/11 - 강의 내용을 기반으로 코드 리팩토링 ver 1.0
-- 1. 타입스크립트의 타입 단언 없애기
+- 타입스크립트의 타입 단언 없애기
 
 **Before**
 ```
@@ -37,7 +28,7 @@ const getTodo = async (todoId: string): Promise<TodoType> => {
 };
 ```
 ** **
-- 2. 토큰 관련 애매한 소스 리팩토링: 토큰 값을 넘겨주는 것이 아닌데 state명이 token을 담아야 할것 같이 느껴짐  
+- 토큰 관련 애매한 소스 리팩토링: 토큰 값을 넘겨주는 것이 아닌데 state명이 token을 담아야 할것 같이 느껴짐  
 **Before**
 ```
 // pages/auth/index.tsx
@@ -99,6 +90,10 @@ export const useToken = (defaultHasToken?: boolean) => {
     };
 };
 ```
-<!-- 
-### 1/12 - 강의 내용을 기반으로 코드 리팩토링 ver 2.0
-- 1. 타입스크립트의 타입 단언 없애기 -->
+
+### 1/16 - 강의 내용을 기반으로 코드 리팩토링 ver 2.0
+- React Query 적용해서 API 호출  
+[#a801c0e](https://github.com/Jowen0/wanted-pre-onboarding-challenge-fe-1/commit/d184879baed6068a147a1ffce636968a8e3c83f9)
+
+### 1/17 - Redux 레포지토리에서 코드 분석하고 직접 scratch 작성해보기  
+- [SCRATCH.md](https://github.com/Jowen0/wanted-pre-onboarding-challenge-fe-1/blob/master/SCRATCH.md)
