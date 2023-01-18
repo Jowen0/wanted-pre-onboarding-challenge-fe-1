@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, HTMLAttributes } from "react";
 import styled from "styled-components";
 
 interface ButtonAtomProps {
@@ -25,10 +25,9 @@ const ButtonAtom = styled.button<ButtonAtomProps>`
     &:first-child { margin-left: 0px; }
 `
 
-interface ButtonProps {
+interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
     text: string,
     disabled?: boolean,
-    onClick?: () => void,
     width?: string,
     height?: string,
     color?: string,

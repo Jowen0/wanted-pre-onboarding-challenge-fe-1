@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, HTMLAttributes, ReactNode, useEffect, useRef } from "react";
 
 import styled from "styled-components";
 
@@ -24,9 +24,9 @@ const FormAtom = styled.form<FormAtomProps>`
     flex-direction: ${props => props.flexDirection};
 `;
 
-interface FormProps {
+interface FormProps extends HTMLAttributes<HTMLFormElement> {
     children: ReactNode,
-    onSubmit?: () => void,
+    method?: 'get' | 'post',
     width?: string,
     minHeight?: string,
     display?: 'block' | 'flex',
@@ -36,9 +36,10 @@ interface FormProps {
     padding?: string,
     margin?: string,
 };
-const Form:FC<FormProps> = ({
+const Form: FC<FormProps> = ({
     children,
     onSubmit,
+    method = 'get',
     width = '100%',
     minHeight = '',
     display = 'block',
@@ -48,8 +49,26 @@ const Form:FC<FormProps> = ({
     padding = '5px',
     margin = '5px',
 }) => {
-    return ( 
-        <FormAtom 
+
+    const formRef = useRef<HTMLFormElement>(null);
+
+    useEffect(() => {
+
+        const form = formRef.current;
+        const preventEnter = (e: KeyboardEvent) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            };
+        };
+
+        form?.addEventListener("keydown", preventEnter);
+
+        return () => form?.removeEventListener("keydown", preventEnter);
+    }, []);
+
+    return (
+        <FormAtom
+            ref={formRef}
             width={width}
             minHeight={minHeight}
             display={display}
@@ -58,11 +77,12 @@ const Form:FC<FormProps> = ({
             flexDirection={flexDirection}
             padding={padding}
             margin={margin}
+            method={method}
             onSubmit={onSubmit}
         >
             {children}
         </FormAtom>
-     );
+    );
 }
- 
+
 export default Form;
