@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FC } from "react";
+import { ChangeEventHandler, FC, HTMLAttributes } from "react";
 import styled from "styled-components";
 
 const TextareaAtom = styled.textarea`
@@ -13,7 +13,7 @@ const TextareaAtom = styled.textarea`
     min-height: 100px;
 `;
 
-interface TextareaProps {
+interface TextareaProps extends HTMLAttributes<HTMLTextAreaElement> {
     name: string,
     value: string,
     placeholder?: string,

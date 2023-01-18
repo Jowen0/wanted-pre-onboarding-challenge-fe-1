@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FC } from "react";
+import { ChangeEventHandler, FC, HTMLAttributes } from "react";
 import styled from "styled-components";
 
 const InputAtom = styled.input`
@@ -13,7 +13,7 @@ const InputAtom = styled.input`
     width: 100%;
 `;
 
-interface InputProps {
+interface InputProps extends HTMLAttributes<HTMLInputElement> {
     type?: string,
     name: string,
     value: string,
@@ -43,7 +43,7 @@ const Input: FC<InputProps> = ({
         <InputAtom
             type={type}
             name={name}
-            value={value}
+            value={value || ""}
             placeholder={placeholder}
             autoComplete={autoComplete}
             disabled={disabled}

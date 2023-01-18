@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, HTMLAttributes } from "react";
 import styled from "styled-components";
 
 const LabalAtom = styled.label`
@@ -8,7 +8,7 @@ const LabalAtom = styled.label`
     margin: 5px;
 `
 
-interface LableProps {
+interface LableProps extends HTMLAttributes<HTMLLabelElement> {
     text: string,
 };
 const Labal: FC<LableProps> = ({ text }) => {

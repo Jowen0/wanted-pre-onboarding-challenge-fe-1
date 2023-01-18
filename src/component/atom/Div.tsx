@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, HTMLAttributes, ReactNode } from "react";
 import styled from "styled-components";
 
 interface DivAtomProps {
@@ -10,7 +10,7 @@ interface DivAtomProps {
     flexDirection: 'row' | 'column',
     padding: string,
     margin: string,
-    borderRight: string,
+    borderLeft: string,
     zIndex: string,
 };
 const DivAtom = styled.div<DivAtomProps>`
@@ -24,11 +24,11 @@ const DivAtom = styled.div<DivAtomProps>`
     flex-direction: ${props => props.flexDirection};
     padding: ${props => props.padding};
     margin: ${props => props.margin};
-    border-right: ${props => props.borderRight};
+    border-left: ${props => props.borderLeft};
     z-index: ${props => props.zIndex};
 `
 
-interface DivProps {
+interface DivProps extends HTMLAttributes<HTMLDivElement> {
     children: ReactNode,
     width?: string,
     minHeight?: string,
@@ -38,7 +38,7 @@ interface DivProps {
     flexDirection?: 'row' | 'column',
     padding?: string,
     margin?: string,
-    borderRight?: string,
+    borderLeft?: string,
     zIndex?: string,
 };
 const Div: FC<DivProps> = ({
@@ -51,7 +51,7 @@ const Div: FC<DivProps> = ({
     flexDirection = 'row',
     padding = '5px',
     margin = '5px',
-    borderRight = '',
+    borderLeft = '',
     zIndex = '0',
 }) => {
     return (
@@ -64,7 +64,7 @@ const Div: FC<DivProps> = ({
             flexDirection={flexDirection}
             padding={padding}
             margin={margin}
-            borderRight={borderRight}
+            borderLeft={borderLeft}
             zIndex={zIndex}
         >
             {children}
