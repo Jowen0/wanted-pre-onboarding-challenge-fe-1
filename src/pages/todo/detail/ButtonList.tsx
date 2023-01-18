@@ -59,7 +59,7 @@ const ButtonList: FC<ButtonListProps> = ({ status, todoInfo, handleTodoStatus })
     };
 
     return (
-        <Div justifyContent="end" display="flex">
+        <Div justifyContent="end" display="flex" minHeight="47px">
             {ButtonComponent()}
             {isPop && <DeleteTodoModal todoId={todoInfo.id} handleIsPop={handleIsPop} />}
         </Div>

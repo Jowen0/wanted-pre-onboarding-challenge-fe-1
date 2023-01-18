@@ -16,6 +16,7 @@ import Div from "component/atom/Div";
 import Modal from "component/Modal";
 import TodoContent from "../detail/TodoContent";
 import TodoTitle from "../detail/TodoTitle";
+import Span from "component/atom/Span";
 
 interface CreateTodoModalProps {
     handleIsPop: (isPop: boolean) => void,
@@ -38,11 +39,21 @@ const CreateTodoModal:FC<CreateTodoModalProps> = ({handleIsPop}) => {
     return ( 
         <Modal
             backgroundColor="#d3e8ff"
+            header={
+                <Div display="flex" justifyContent="center" margin="0 0 -35px 0">
+                    <Span
+                        text="등 록"
+                        fontSize="20px"
+                        fontWeight="bold"
+                        textAlign="center"
+                    />
+                </Div>
+            }
             content={
                 <>
                     <TodoTitle title={title} handleTodoInfoProperty={handleTodoInfoProperty} />
                     <TodoContent content={content} handleTodoInfoProperty={handleTodoInfoProperty} />
-                    <Div margin="20px 5px 5px 5px" display="flex" justifyContent="center">
+                    <Div margin="20px 5px -35px 5px" display="flex" justifyContent="center">
                         <Button text="추가" onClick={createTodo} width='250px' backgroundColor='#333' color="#fff" borderColor="#333" />
                     </Div>
                 </>

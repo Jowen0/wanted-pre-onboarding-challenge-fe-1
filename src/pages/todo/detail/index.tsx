@@ -10,8 +10,8 @@ import { useTodoInfo } from "hook/todo/useTodoInfo";
 import { useGetTodo } from "api/todo";
 
 // Component
-import ButtonList from "./ButtonList";
 import Div from "component/atom/Div";
+import ButtonList from "./ButtonList";
 import TodoTitle from "./TodoTitle";
 import TodoContent from "./TodoContent";
 
@@ -36,7 +36,7 @@ const TodoDetail: FC<TodoDetailProps> = ({ todoId = "", status, handleTodoStatus
 
     return (
         resTodo ?
-        <Div width="100%">
+        <Div width="100%" borderLeft="1px solid #ccc" padding="5px 5px 5px 10px">
             <ButtonList status={status} todoInfo={todoInfo} handleTodoStatus={handleTodoStatus} />
             <TodoTitle title={title} status={status} handleTodoInfoProperty={handleTodoInfoProperty} />
             <TodoContent content={content} status={status} handleTodoInfoProperty={handleTodoInfoProperty} />

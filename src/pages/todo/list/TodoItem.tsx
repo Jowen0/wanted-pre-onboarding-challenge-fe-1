@@ -29,16 +29,16 @@ const TodoItem: FC<TodoItemProps> = ({ todo, handleTodoStatus }) => {
 
     const navigation = useNavigate();
 
+    // 상세 변경
     const changeDetail = useCallback(() => {
         handleTodoStatus(TODO_STATUS.READ);
         navigation(`${PAGE_URL.TODO}/${todo.id}`)
     },[navigation, todo, handleTodoStatus]);
-    
 
     return (
         <TodoItemWrapper onClick={() => changeDetail()}>
             <Div>{todo.title}</Div>
-            <Div width="95%" display="flex" justifyContent="end"><span style={{fontSize: 12}}>{todo.updatedAt.substring(0, 10)}</span></Div>
+            <Div width="95%" display="flex" justifyContent="end"><span style={{fontSize: 12}}>update {todo.updatedAt.substring(0, 10)}</span></Div>
         </TodoItemWrapper>
     );
 }

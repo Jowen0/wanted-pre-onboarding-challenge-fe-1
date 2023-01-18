@@ -11,6 +11,7 @@ import { PAGE_URL } from "type/common";
 import Modal from "component/Modal";
 import Div from "component/atom/Div";
 import Button from "component/atom/Button";
+import Span from "component/atom/Span";
 
 interface DeleteTodoModalProps {
     todoId: string,
@@ -33,15 +34,28 @@ const DeleteTodoModal:FC<DeleteTodoModalProps> = ({todoId, handleIsPop}) => {
 
     return (
         <Modal
-            header={<Div display="flex" justifyContent="center">삭제 확인</Div>}
+            header={
+                <Div display="flex" justifyContent="center" margin="5px 5px 5px 30px">
+                    <Span
+                        text="삭제 확인"
+                        fontSize="20px"
+                        fontWeight="bold"
+                        textAlign="center"
+                    />
+                </Div>
+            }
             content={
-                <Div margin="0 0 -15px 0" padding="0">
-                    <Div display="flex" justifyContent="center">삭제 하시겠습니까?</Div>
+                <Div display="flex" justifyContent="center" padding="0 5px 0 15px" margin="-5px 5px -5px 5px">
+                    <Span
+                        text="삭제 하시겠습니까?"
+                        fontSize="20px"
+                        textAlign="center"
+                    />
                 </Div>
             }
             button={
-                <Div margin="20px 5px 5px 5px" display="flex" justifyContent="center">
-                    <Button text="삭제" onClick={deleteTodo} width='250px' backgroundColor='#333' color="#fff" borderColor="#333" />
+                <Div display="flex" justifyContent="center" margin="0 5px 5px 15px" >
+                    <Button text="삭제" onClick={deleteTodo} width='250px' backgroundColor='#f14e4e' color="#fff" borderColor="#333" />
                 </Div>
             }
             handleIsPop={handleIsPop}

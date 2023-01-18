@@ -1,6 +1,4 @@
 export const TODO_STATUS = {
-    LIST: 'list',
-    CREATE: 'create',
     READ: 'read',
     UPDATE: 'update',
 } as const;
