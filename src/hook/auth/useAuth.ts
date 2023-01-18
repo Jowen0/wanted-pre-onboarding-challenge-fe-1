@@ -1,7 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 
 // Type
 import { AuthInfo } from "type/auth";
+
+// Util
+import { validateEmail, validatePassword } from "util/validation";
 
 export const useAuth = () => {
 
@@ -10,36 +13,19 @@ export const useAuth = () => {
         email: '',
         password: '',
     });
-    const { email, password } = authInfo;
 
     // 이메일/비밀번호 입력
     const handleAuthInfo = (key: string, value: string) => {
         setAuthInfo(prev => ({ ...prev, [key]: value }));
     };
 
-    // 이메일/비밀번호 유효성검사
-    const validateAuthInfo = useCallback(() => {
-
-        let isValidated = false;
-        const emailReg = /[0-9a-zA-Z]@[a-z].[a-z]{2,3}/;
-
-        if (email === "" || !emailReg.test(email)) isValidated = true;
-        else if (password === "" || password.length < 8) isValidated = true;
-
-        return isValidated;
-        
-    }, [email, password]);
-
-    const [isValidated, setIsValidated] = useState(false);
-    useEffect(() => {
-        if(!validateAuthInfo()) {
-            setIsValidated(true);
-        }
-    },[validateAuthInfo])
+    const isEmail = validateEmail(authInfo.email);
+    const isPassword = validatePassword(authInfo.password);
 
     return {
         authInfo,
         handleAuthInfo,
-        isValidated,
+        isEmail,
+        isPassword,
     };
 };
