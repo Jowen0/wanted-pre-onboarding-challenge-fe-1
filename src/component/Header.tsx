@@ -1,30 +1,25 @@
 import { FC } from "react";
-
-// HOC
-import WithAuth from "hoc/WithAuth";
-
-// Type
-import { WithAuthType } from "hoc/WithAuth";
-
-// API
-import { AUTH_API } from "api/auth";
+import { useNavigate } from "react-router-dom";
 
 // Hook
 import { useToken } from "hook/common/useToken";
+
+// Type
+import { PAGE_URL } from "type/common";
 
 // Component
 import Div from "./atom/Div";
 import Button from "./atom/Button";
 
-const Header: FC<WithAuthType> = ({ handleHasToken }) => {
+const Header: FC = () => {
 
     const { removeTokenInLocalSotrage } = useToken();
+    const navigation = useNavigate();
 
     const handleLogOut = () => {
-        if (handleHasToken && AUTH_API.logOut()) {
-            removeTokenInLocalSotrage();
-            handleHasToken(false);
-        };
+        removeTokenInLocalSotrage();
+        alert('로그아웃 되었습니다.');
+        navigation(PAGE_URL.LOGIN);
     };
 
     return (
@@ -35,4 +30,4 @@ const Header: FC<WithAuthType> = ({ handleHasToken }) => {
     );
 }
 
-export default WithAuth(Header);
+export default Header;
