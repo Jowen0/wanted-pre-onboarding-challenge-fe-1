@@ -2,10 +2,14 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
+// Type
+import { PAGE_URL } from 'type/common';
+
 // Component
 import AuthContainer from 'pages/auth';
 import TodoContainer from 'pages/todo';
 import Layout from 'component/Layout';
+import NotFound from 'pages/error/NotFound';
 
 function App() {
 
@@ -16,6 +20,9 @@ function App() {
           suspense: true,
           staleTime: 1000 * 5,
           cacheTime: 0,
+          refetchOnWindowFocus: false,
+          refetchOnMount: false,
+          refetchOnReconnect: false,
         },
     },
   });
@@ -24,10 +31,12 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
-          <Route path='/' element={<Navigate to={"/login"} />} />
-          <Route path='/login' element={<AuthContainer />} />
-          <Route path='/todo' element={<Layout />} >
-            <Route path='/todo' element={<TodoContainer />} >
+          <Route path='*' element={<Navigate to={PAGE_URL.NOT_FOUND} />} />
+          <Route path='/' element={<Navigate to={PAGE_URL.LOGIN} />} />
+          <Route path={PAGE_URL.NOT_FOUND} element={<NotFound />} />
+          <Route path={PAGE_URL.LOGIN} element={<AuthContainer />} />
+          <Route path={PAGE_URL.TODO} element={<Layout />} >
+            <Route path={PAGE_URL.TODO} element={<TodoContainer />} >
               <Route path=':id' element={<TodoContainer />} />
             </Route>
           </Route>
