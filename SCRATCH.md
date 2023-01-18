@@ -17,7 +17,7 @@ const createStore = (reducer) => {
 
   let currentReducer = reducer;
   let currentState;
-  let currentListner;
+  let currentListners = [];
 
   const getState = () => {
     return currentState;
@@ -25,12 +25,16 @@ const createStore = (reducer) => {
 
   const dispatch = (action) => {
     currentState = currentReducer(currentState, action);
-    currentListner();
+    currentListners.forEach(listner => lister());
     return action;
   };
 
   const subscribe = (listner) => {
-    currentListner = listner;
+    currentListners.push(listner);
+    return () => {
+      const index = currentListners.indexOf(listner);
+      currentListners.slice(index, 1);
+    }
   };
 
   return {
