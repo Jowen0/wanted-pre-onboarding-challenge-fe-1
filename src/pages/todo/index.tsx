@@ -21,6 +21,7 @@ import TodoDetail from "./detail";
 import Div from "component/atom/Div";
 import Loading from "component/Loading";
 import CreateTodoModal from "./modal/CreateTodoModal";
+import Error from "pages/error/Error";
 
 const TodoContainer: FC = () => {
 
@@ -32,7 +33,7 @@ const TodoContainer: FC = () => {
 
     // ID params으로 todoId 설정
     useLayoutEffect(() => {
-        if (id) handleTodoId(id);
+        handleTodoId(id);
     }, [id, handleTodoId]);
 
     // 뒤로가기 시 이전 Todo URL로 이동
@@ -54,20 +55,17 @@ const TodoContainer: FC = () => {
     usePopState(moveToPrevTodoWithBack);
 
     return (
-        <Div width="70%" display="flex" justifyContent="center" padding="5% 15% 5% 15%" alignItems="normal">
-            <ErrorBoundary fallback={<div>Error</div>} onError={err => console.log('리스트 에러', err)}>
+        <ErrorBoundary fallback={<Error />} >
+            <Div width="70%" minHeight="962px" display="flex" justifyContent="center" padding="5% 15% 5% 15%" alignItems="normal">
                 <Suspense fallback={<Loading />}>
                     <TodoList todoId={todoId} handleTodoStatus={handleTodoStatus} handleIsPop={handleIsCreateModalPop} />
+                    <Suspense fallback={<Loading />}>
+                        {todoId && <TodoDetail todoId={todoId} status={status} handleTodoStatus={handleTodoStatus} />}
+                    </Suspense>
                 </Suspense>
-            </ErrorBoundary>
-
-            <ErrorBoundary fallback={<div>Error</div>} onError={err => console.log(err)}>
-                <Suspense fallback={<Loading />}>
-                    <TodoDetail todoId={todoId} status={status} handleTodoStatus={handleTodoStatus} />
-                </Suspense>
-            </ErrorBoundary>
-            {isCreateModalPop && <CreateTodoModal handleIsPop={handleIsCreateModalPop} />}
-        </Div>
+                {isCreateModalPop && <CreateTodoModal handleIsPop={handleIsCreateModalPop} />}
+            </Div>
+        </ErrorBoundary>
     );
 }
 
