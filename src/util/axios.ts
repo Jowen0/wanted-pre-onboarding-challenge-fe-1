@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 // Token Key
 import { TOKEN_KEY } from "hook/common/useToken";
@@ -16,7 +16,7 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-
+        
         const token = localStorage.getItem(TOKEN_KEY);
         if (!(config.url?.includes(AUTH_URL.LOGIN) || config.url?.includes(AUTH_URL.SING_UP)) && !token) {
             window.location.pathname = PAGE_URL.LOGIN;
@@ -35,7 +35,8 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     (error) => {
-        if(error instanceof Error) alert(error.message);
-        else return Promise.reject(error);
+        if(error instanceof Error && error.name !== 'AxiosError') alert(error.message)
+        else if (error instanceof AxiosError && error.response?.data?.details) alert(error.response?.data?.details);
+        return Promise.reject(error);
     }
 );
