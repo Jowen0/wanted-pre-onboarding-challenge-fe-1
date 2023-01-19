@@ -1,99 +1,136 @@
-# 프로젝트 일지
-### 1/9 - CSS를 제외한 로직 구현에 집중(미적 감각이 부족한거 절대 아님!!!ㅎㅎㅠ) / 챌린지가 진행하는 동안 CSS 적용 예정  
+# 프로젝트 소개
 
-### 1/11 - 강의 내용을 기반으로 코드 리팩토링 ver 1.0
-- 타입스크립트의 타입 단언 없애기
+## 1. 구현 화면
+- **회원가입 / 로그인**
 
-**Before**
+![Auth](https://user-images.githubusercontent.com/76735567/213325759-da72046f-9df0-45c7-ab65-01455aa34aa9.gif)
+
+- **TODO CRUD**
+
+![CRUD](https://user-images.githubusercontent.com/76735567/213329090-0654686e-8f39-414c-a83d-e0b6b521a9ee.gif)
+
+- **페이지 뒤로가기 시 이전 TODO로 이동**
+
+![BackEvent](https://user-images.githubusercontent.com/76735567/213329096-341869e7-8de3-4c1e-808a-8608d175430a.gif)
+
+## 2. 설치 및 실행방법
 ```
-// api/auth.ts
-
-const getTodo = async (todoId: string) => {
-
-  const authorization = localStorage.getItem("token") || '';
-  const res = await useAxios.get(`${TODO_URL.TODOS}/${todoId}`, authorization);
-  return res.data as TodoType;
-};
-```
-
-**After**
-```
-// api/auth.ts
-
-const getTodo = async (todoId: string): Promise<TodoType> => {
-
-  const authorization = localStorage.getItem("token") || '';
-  const res = await useAxios.get(`${TODO_URL.TODOS}/${todoId}`, authorization);
-  return res.data;
-};
-```
-** **
-- 토큰 관련 애매한 소스 리팩토링: 토큰 값을 넘겨주는 것이 아닌데 state명이 token을 담아야 할것 같이 느껴짐  
-**Before**
-```
-// pages/auth/index.tsx
-
-// 토큰 존재할 시 리다이렉트
-const [token, setToken] = useState('');
-const handleToken = (token: string) => {
-    setToken(token);
-};
-
-const navigation = useNavigate();
-useEffect(() => {
-    if (token || localStorage.getItem('token')) navigation(PAGE_URL.TODO);
-}, [navigation, token]);
+1. npm install
+2. npm start
 ```
 
-**After**
+## 3. 구현 요구 사항 목록
+**Assignment 1 - Login / SignUp**
+
+- /auth 경로에 로그인 / 회원가입 기능을 개발합니다
+  - 로그인, 회원가입을 별도의 경로로 분리해도 무방합니다
+  - [X] 최소한 이메일, 비밀번호 input, 제출 button을 갖도록 구성해주세요
+  - [X] 이메일과 비밀번호의 유효성을 확인합니다
+  - [X] 이메일 조건 : 최소 `@`, `.` 포함
+  - [X] 비밀번호 조건 : 8자 이상 입력
+  - [X] 이메일과 비밀번호가 모두 입력되어 있고, 조건을 만족해야 제출 버튼이 활성화 되도록 해주세요
+  - [X] 로그인 API를 호출하고, 올바른 응답을 받았을 때 루트 경로로 이동시켜주세요
+  - [X] 응답으로 받은 토큰은 로컬 스토리지에 저장해주세요
+  - [X] 다음 번에 로그인 시 토큰이 존재한다면 루트 경로로 리다이렉트 시켜주세요
+  - [X] 어떤 경우든 토큰이 유효하지 않다면 사용자에게 알리고 로그인 페이지로 리다이렉트 시켜주세요
+
+**Assignment 2 - Todo List**
+
+- Todo List API를 호출하여 Todo List CRUD 기능을 구현해주세요
+  - [X] 목록 / 상세 영역으로 나누어 구현해주세요
+  - [X] Todo 목록을 볼 수 있습니다.
+  - [X] Todo 추가 버튼을 클릭하면 할 일이 추가 됩니다.
+  - [X] Todo 수정 버튼을 클릭하면 수정 모드를 활성화하고, 수정 내용을 제출하거나 취소할 수 있습니다.
+  - [X] Todo 삭제 버튼을 클릭하면 해당 Todo를 삭제할 수 있습니다.
+  - [X] 한 화면 내에서 Todo List와 개별 Todo의 상세를 확인할 수 있도록 해주세요.
+  - [X] 새로고침을 했을 때 현재 상태가 유지되어야 합니다.
+  - [X] 개별 Todo를 조회 순서에 따라 페이지 뒤로가기를 통하여 조회할 수 있도록 해주세요.
+  - [X] 한 페이지 내에서 새로고침 없이 데이터가 정합성을 갖추도록 구현해주세요
+  - [X] 수정되는 Todo의 내용이 목록에서도 실시간으로 반영되어야 합니다
+
+**과제 참고 사항**
+
+1. 로컬 서버를 실행했을 때 생성되는 `db/db.json`이 DB 역할을 하게 됩니다. 해당 파일을 삭제하면 DB는 초기화 됩니다.
+
+2. 로그인 / 회원 가입 기능은 유저를 DB에 추가하고 JWT 토큰을 응답으로 돌려줄 뿐, 실제 유저별로 Todo 목록을 관계 지어 관리하지는 않습니다. (모든 유저가 하나의 Todo를 가짐)
+
+3. 로그아웃은 클라이언트 단에서 localStorage에 저장된 token을 삭제하는 방식으로 간단히 구현해주세요.
+
+
+## 4. 사용 기술
+- **React**  
 ```
-// pages/auth/index.tsx
-
-// 토큰
-const { hasToken, handleHasToken, getTokenFromLocalStorage } = useToken();
-
-// 토큰 존재할 시 리다이렉트
-const navigation = useNavigate();
-useEffect(() => {
-    if (hasToken || getTokenFromLocalStorage()) navigation(PAGE_URL.TODO);
-}, [navigation, hasToken]);
-
-
-// hook/auth/useAuth.ts
-
-export const useToken = (defaultHasToken?: boolean) => {
-
-    const [hasToken, setHasToken] = useState(defaultHasToken || false);
-
-    const handleHasToken = useCallback((hasToken: boolean) => {
-        setHasToken(hasToken);
-    }, [setHasToken]);
-
-    const getTokenFromLocalStorage = useCallback(() => {
-        return localStorage.getItem(TOKEN_KEY);
-    }, []);
-
-    const setTokenInLocalStorage = useCallback((token: string) => {
-        localStorage.setItem(TOKEN_KEY, token);
-    }, []);
-
-    const removeTokenInLocalSotrage = useCallback(() => {
-        localStorage.removeItem(TOKEN_KEY);
-    }, []);
-
-    return {
-        hasToken,
-        handleHasToken,
-        getTokenFromLocalStorage,
-        setTokenInLocalStorage,
-        removeTokenInLocalSotrage,
-    };
-};
+1. 컴포넌트 기반으로 재사용성을 고려한 코드 개발이 가능하다.
+2. JSX를 통해 선언형 구조를 나타내기 쉽다.
+```
+- **TypeScript**  
+```
+1. 컴파일 단계에서 오류 확인이 가능하다.
+2. 타입 추론을 통해 코드 생산성, 가독성을 높일 수 있다.
+```
+- **React Query**  
+```
+1. 'SWR(Stale-While-Revalidate)' 전략을 통해 응답속도를 최적화 한다.
+2. 서버 상태와 프론트 상태를 분리해서 관리할 수 있기 때문에 관심사 분리에 유리하다.
+3. 비동기 통신을 위해 사용해야 하는 isLoading, isError, 등 통신 관련 상태 관리 코드량을 줄여준다.
+4. Suspense for Data Feching 기능을 제공하기 때문에 내부적으로 성공하는 시나리오만 고려한 컴포넌트 작성이 가능하다.
+```
+- **Styled-Component**  
+```
+1. 'CSS IN JS' 방식으로 원하는 스타일을 적재적소에 추가할 수 있다.
+2. 개인적으로 UI 라이브러리를 사용하지 않고, 직접 CSS를 만들어 보고 싶었다.
 ```
 
-### 1/16 - 강의 내용을 기반으로 코드 리팩토링 ver 2.0
-- React Query 적용해서 API 호출  
-[#a801c0e](https://github.com/Jowen0/wanted-pre-onboarding-challenge-fe-1/commit/d184879baed6068a147a1ffce636968a8e3c83f9)
+## 5. 폴더 구조
+```
+src
+|---api
+|---component
+|   |---atom
+|---hoc
+|---hook
+|   |---auth
+|   |---common
+|   |---todo
+|---pages
+|   |---auth
+|   |   |---login
+|   |   |---signUp
+|   |---error
+|   |---todo
+|       |---detail
+|       |---list
+|       |---modal
+|---type
+|---util
+```
+**폴더 구분 기준**
+- **Total**
+  - 전체적으로 각 기능별로 폴더를 구분했다.  
 
-### 1/17 - Redux 레포지토리에서 코드 분석하고 직접 scratch 작성해보기  
-- [SCRATCH.md](https://github.com/Jowen0/wanted-pre-onboarding-challenge-fe-1/blob/master/SCRATCH.md)
+- **Component**
+  - component 폴더의 경우, 고민이 많았는데, hook 폴더 처럼 해당 페이지와 관련된 컴포넌트들을 component 폴더에 위치시키는 방향을 생각했으나, index.tsx로 메인 컴포넌트 구분이 가능하기 때문에 응집도를 고려해서 pages 내부에 컴포넌트들을 집합시켰다.  
+때문에 component 폴더는 공통으로 사용되는 컴포넌트만 모아두었다.  
+
+- **Hook**
+  - hook 폴더의 경우, 각각의 도메인 hook 기능도 응집도를 고려해 pages 내부에 위치시키는 생각을 했으나, pages의 카테고리가 컴포넌트라고 생각했기 때문에 hook 폴더 내부로 각 기능을 위치시켰다.
+
+## 6. 과제 진행 시 주안점
+- **클린 코드**
+  - 클린 코드 아키텍처를 고려해서 과제를 진행했고, 관심사 분리를 위해 커스텀 훅을 사용했다. 커스텀 훅을 사용하면서 훅 내부에 응집도를 어느정도까지 결합시켜야 할지, 어떤 기능은 util로 추출해야 할지 주로 고민했다.  
+
+- **API**
+  - API 관련해서 React Query를 사용할 때 queryFn을 따로 관리해야 하는가에 대한 고민을 했는데, 응집도 및 코드 가독성을 생각하면 둘이 같은 파일에 위치하는게 좋다고 생각하여 각 기능별 API 파일에 같이 코딩했다.  
+
+- **Query Key**
+  - React Query의 Key 관리에 대해 고려를 했는데, Key는 동적으로 생성되는데 useQueryClinet를 통해 캐시를 사용하려면 Key 관리가 필요하다고 느꼈고, 기준 Key값을 갖는 객체를 이용해서 Key 관리를 하면 좋을 것 같다고 생각해서 Key 객체를 각 API 파일에 선언했다.
+
+## 7. 한계점 및 개선 사항
+- **공통 모달**
+  - 공통 모달을 만들었지만 커스터마이징이 많이 필요하고, 모달을 제어하기 위한 상태를 모달을 호출하는 컴포넌트마다 새롭게 선언해서 사용해야 하는 부분을 개선하고 싶다. 커스텀 훅을 이용해 반복되는 모달 제어를 하는 현재 프로세스에서 모달 내부에서 팝업을 제어할 수 있는 방안을 고려하고 있다.  
+
+- **인증 토큰 관리**
+  - 로그인 토큰의 경우, 로컬스토리지에 저장해서 사용했지만 Context API or 전역상태관리 라이브러리를 통해서 토큰을 관리하는 방안을 고려하고 있는데, XSS 공격을 어느정도 방어할 수 있지 않을까 싶기 때문이다.
+
+- **Git**
+  - 프로젝트를 진행하면서 ISSUE 탭 사용과, PR 단위 커밋 관리를 하지 못한 점이 너무 아쉽고, 다음에는 이를 고려해서 프로젝트를 진행해야겠다고 생각을 했다.
